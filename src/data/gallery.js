@@ -31,5 +31,4 @@ export const gallery = [
   { type: 'photo', src: videoSession, title: 'Construction Safety Video Training', category: 'training' },
   { type: 'art', art: 'audit', title: 'Safety & Environment Audits', category: 'inspection' },
   { type: 'photo', src: civilStructural, title: 'Civil & Structural Engineering', category: 'civil', position: 'object-left-top' },
-  { type: 'art', art: 'iso', title: 'ISO Consulting', category: 'inspection' },
 ]
