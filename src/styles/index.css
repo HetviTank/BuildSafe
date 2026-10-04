@@ -1,0 +1,112 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Sora', ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-50: #fff4ec;
+  --color-brand-100: #ffe5d2;
+  --color-brand-200: #ffc8a3;
+  --color-brand-300: #ffa36b;
+  --color-brand-400: #ff7a33;
+  --color-brand-500: #f25c05;
+  --color-brand-600: #d94a00;
+  --color-brand-700: #b33a04;
+
+  --color-ink-950: #070b14;
+  --color-ink-900: #0b1220;
+  --color-ink-800: #131c2e;
+  --color-ink-700: #1e293b;
+
+  --color-navy-600: #1d3f8f;
+  --color-navy-700: #173273;
+
+  --animate-marquee: marquee 32s linear infinite;
+  --animate-marquee-reverse: marquee 38s linear infinite reverse;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 2.2s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(0.9); opacity: 0.7; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-white font-sans text-slate-700 antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display text-ink-900 tracking-tight;
+  }
+  ::selection {
+    @apply bg-brand-500 text-white;
+  }
+}
+
+@utility container-x {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+@utility section {
+  @apply py-20 sm:py-28;
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500;
+}
+@utility btn-primary {
+  @apply btn bg-brand-500 text-white shadow-lg shadow-brand-500/30 hover:-translate-y-0.5 hover:bg-brand-600 hover:shadow-xl hover:shadow-brand-500/40;
+}
+@utility btn-ghost {
+  @apply btn border border-white/25 text-white backdrop-blur hover:border-white/60 hover:bg-white/10;
+}
+@utility btn-outline {
+  @apply btn border border-slate-300 text-ink-900 hover:border-brand-500 hover:text-brand-600;
+}
+@utility text-gradient {
+  @apply bg-gradient-to-r from-brand-400 via-brand-500 to-amber-400 bg-clip-text text-transparent;
+}
+@utility grid-bg {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+@utility field {
+  @apply w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-ink-900 transition placeholder:text-slate-400 focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand-500/15;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Rising ember particles (see components/ui/Embers.jsx) */
+.ember {
+  opacity: 0;
+  filter: blur(0.5px);
+  box-shadow: 0 0 8px 2px rgb(242 92 5 / 0.6);
+  animation-name: ember-rise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes ember-rise {
+  0% { transform: translate(0, 0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  80% { opacity: 0.6; }
+  100% { transform: translate(var(--drift), -85vh) scale(0.3); opacity: 0; }
+}
