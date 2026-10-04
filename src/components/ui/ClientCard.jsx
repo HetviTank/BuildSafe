@@ -15,9 +15,11 @@ export default function ClientCard({ client, className = '' }) {
       className={`group flex items-center gap-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-xl hover:shadow-ink-900/10 ${className}`}
     >
       {client.logo ? (
-        <img src={client.logo} alt="" className="h-12 w-12 shrink-0 object-contain" />
+        <span className="grid h-14 w-24 shrink-0 place-items-center rounded-xl bg-white p-1.5 ring-1 ring-slate-100 transition duration-300 group-hover:scale-105 group-hover:ring-brand-200">
+          <img src={client.logo} alt={`${client.name} logo`} className="max-h-full max-w-full object-contain" />
+        </span>
       ) : (
-        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-ink-900 to-ink-700 font-display text-sm font-bold text-white transition duration-300 group-hover:from-brand-500 group-hover:to-brand-700">
+        <span className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-ink-900 to-ink-700 font-display text-sm font-bold text-white transition duration-300 group-hover:from-brand-500 group-hover:to-brand-700">
           {initials(client.name)}
         </span>
       )}
