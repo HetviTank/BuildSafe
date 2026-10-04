@@ -83,7 +83,8 @@ export default function GalleryGrid({ limit, filters = true }) {
 
   return (
     <>
-      {filters && (
+      {/* Filters only make sense with more than one category besides "All". */}
+      {filters && galleryCategories.length > 2 && (
         <div className="flex flex-wrap justify-center gap-2" role="tablist" aria-label="Gallery categories">
           {galleryCategories.map((c) => (
             <button
