@@ -78,7 +78,7 @@ export default function ServiceDetail() {
 
   if (!service) return <Navigate to="/services" replace />
 
-  const photos = gallery.filter((g) => g.type === 'photo' && g.category === service.art)
+  const photos = gallery.filter((g) => g.category === service.art)
   const index = services.indexOf(service)
   const prev = services[(index - 1 + services.length) % services.length]
   const next = services[(index + 1) % services.length]

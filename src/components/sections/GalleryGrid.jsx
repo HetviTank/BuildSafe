@@ -1,16 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FaChevronLeft, FaChevronRight, FaExpand, FaTimes } from 'react-icons/fa'
-import { ServiceArt } from '../illustrations'
 import { gallery, galleryCategories } from '../../data/gallery'
-
-function Media({ item, className }) {
-  return item.type === 'photo' ? (
-    <img src={item.src} alt={item.title} loading="lazy" className={`object-cover ${item.position ?? ""} ${className}`} />
-  ) : (
-    <ServiceArt name={item.art} className={className} />
-  )
-}
 
 function Lightbox({ items, index, onClose, onStep }) {
   useEffect(() => {
@@ -52,9 +43,9 @@ function Lightbox({ items, index, onClose, onStep }) {
           exit={{ opacity: 0, scale: 0.92 }}
           transition={{ duration: 0.3 }}
           onClick={(e) => e.stopPropagation()}
-          className="w-full max-w-5xl overflow-hidden rounded-2xl shadow-2xl"
+          className="max-w-5xl overflow-hidden rounded-2xl shadow-2xl"
         >
-          <Media item={item} className="max-h-[78vh] w-full" />
+          <img src={item.src} alt={item.title} className="max-h-[78vh] w-full object-contain" />
         </motion.div>
       </AnimatePresence>
       <p className="mt-4 text-center text-sm text-slate-300">
@@ -84,6 +75,8 @@ export default function GalleryGrid({ limit, filters = true }) {
 
   const filtered = category === 'all' ? gallery : gallery.filter((g) => g.category === category)
   const items = limit ? filtered.slice(0, limit) : filtered
+  // Wide tiles only balance the grid when every photo is shown.
+  const showWide = !limit && category === 'all'
 
   const close = useCallback(() => setIndex(null), [])
   const step = useCallback((dir) => setIndex((i) => (i + dir + items.length) % items.length), [items.length])
@@ -112,7 +105,7 @@ export default function GalleryGrid({ limit, filters = true }) {
         </div>
       )}
 
-      <motion.div layout className={`grid gap-5 sm:grid-cols-2 lg:grid-cols-3 ${filters ? 'mt-10' : ''}`}>
+      <motion.div layout className={`grid gap-5 sm:grid-cols-2 lg:auto-rows-[260px] lg:grid-cols-3 ${filters ? 'mt-10' : ''}`}>
         <AnimatePresence mode="popLayout">
           {items.map((item, i) => (
             <motion.button
@@ -124,10 +117,17 @@ export default function GalleryGrid({ limit, filters = true }) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.4 }}
-              className="group relative aspect-[4/3] overflow-hidden rounded-3xl bg-ink-900 text-left shadow-sm"
+              className={`group relative aspect-[4/3] overflow-hidden rounded-3xl bg-ink-900 text-left shadow-sm lg:aspect-auto ${
+                item.wide && showWide ? 'lg:col-span-2' : ''
+              }`}
               aria-label={`Open: ${item.title}`}
             >
-              <Media item={item} className="h-full w-full transition duration-700 group-hover:scale-110" />
+              <img
+                src={item.src}
+                alt={item.title}
+                loading="lazy"
+                className={`h-full w-full object-cover transition duration-700 group-hover:scale-110 ${item.position ?? ''}`}
+              />
               <span className="absolute inset-0 flex items-end justify-between gap-3 bg-gradient-to-t from-ink-950/90 via-ink-950/20 to-transparent p-5 opacity-0 transition duration-500 group-hover:opacity-100">
                 <span className="translate-y-3 text-base font-semibold text-white transition duration-500 group-hover:translate-y-0">{item.title}</span>
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-500 text-white">
