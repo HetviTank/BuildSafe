@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { FaArrowRight, FaCheckCircle } from 'react-icons/fa'
 import isoBadge from '../../assets/images/brand/iso-badge.webp'
 import Embers from '../ui/Embers'
+import { SocialIcons } from '../ui/SocialLinks'
 import { company } from '../../data/company'
 
 const headline = ['Safety', 'Today,']
@@ -71,6 +72,12 @@ export default function Hero() {
               <FaArrowRight className="transition-transform group-hover:translate-x-1" />
             </Link>
             <Link to="/services" className="btn-ghost">Explore Services</Link>
+          </motion.div>
+
+          <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-4">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Follow us</span>
+            <span className="h-px w-8 bg-slate-600" />
+            <SocialIcons size="sm" />
           </motion.div>
         </motion.div>
 

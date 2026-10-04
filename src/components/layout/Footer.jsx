@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
-import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa'
+import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa'
 import Logo from '../ui/Logo'
+import { SocialIcons } from '../ui/SocialLinks'
 import { company, contact, navLinks, telHref } from '../../data/company'
 import { services } from '../../data/services'
 
@@ -20,20 +21,11 @@ export default function Footer() {
             </div>
           </Link>
           <p className="mt-5 text-sm leading-relaxed">{company.summary}</p>
-          <div className="mt-5 flex flex-wrap items-center gap-3">
-            <span className="inline-flex rounded-full border border-navy-600/60 bg-navy-700/30 px-4 py-1.5 text-xs font-semibold text-blue-200">
-              {company.certification}
-            </span>
-            <a
-              href={`https://wa.me/${contact.whatsapp}`}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="WhatsApp"
-              className="grid h-9 w-9 place-items-center rounded-full bg-white/5 text-lg text-white transition hover:bg-[#25D366]"
-            >
-              <FaWhatsapp />
-            </a>
-          </div>
+          <span className="mt-5 inline-flex rounded-full border border-navy-600/60 bg-navy-700/30 px-4 py-1.5 text-xs font-semibold text-blue-200">
+            {company.certification}
+          </span>
+          <p className="mt-7 text-sm font-bold uppercase tracking-widest text-white">Follow Us</p>
+          <SocialIcons className="mt-4" />
         </div>
 
         <div className="lg:col-span-2">

@@ -14,6 +14,7 @@ import {
   FaCheckDouble,
   FaTools,
 } from 'react-icons/fa'
+import { FaFacebookF, FaInstagram, FaXTwitter, FaLinkedinIn, FaYoutube } from 'react-icons/fa6'
 
 export const company = {
   name: 'BuildSafe Enterprise',
@@ -36,6 +37,55 @@ export const contact = {
   mapQuery: 'Mithapashvariya Road, Bhuj Bhachau Bypass, Anjar 370110',
   hours: '24/7 Emergency Response',
 }
+
+// Social profiles. `color` is the brand colour used on hover; `gradient` styles the large cards.
+export const socials = [
+  {
+    name: 'Facebook',
+    handle: 'BuildSafe Enterprise',
+    url: 'https://www.facebook.com/profile.php?id=61580669030066',
+    icon: FaFacebookF,
+    color: '#1877F2',
+    gradient: 'from-[#1877F2] to-[#0b4fb3]',
+    cta: 'Like our page',
+  },
+  {
+    name: 'Instagram',
+    handle: '@buildsafeenterprise',
+    url: 'https://www.instagram.com/buildsafeenterprise',
+    icon: FaInstagram,
+    color: '#E1306C',
+    gradient: 'from-[#feda75] via-[#d62976] to-[#4f5bd5]',
+    cta: 'Follow us',
+  },
+  {
+    name: 'X',
+    handle: '@Buildsafekutch',
+    url: 'https://x.com/Buildsafekutch',
+    icon: FaXTwitter,
+    color: '#000000',
+    gradient: 'from-[#1f1f1f] to-[#000000]',
+    cta: 'Follow us',
+  },
+  {
+    name: 'LinkedIn',
+    handle: 'BuildSafe Enterprise',
+    url: 'https://www.linkedin.com/in/buildsafe-enterprise-b784a8376',
+    icon: FaLinkedinIn,
+    color: '#0A66C2',
+    gradient: 'from-[#0A66C2] to-[#063f78]',
+    cta: 'Connect',
+  },
+  {
+    name: 'YouTube',
+    handle: '@buildsafeenterprise',
+    url: 'https://www.youtube.com/@buildsafeenterprise',
+    icon: FaYoutube,
+    color: '#FF0000',
+    gradient: 'from-[#FF0000] to-[#b30000]',
+    cta: 'Subscribe',
+  },
+]
 
 export const telHref = (phone) => `tel:${phone.replace(/\s/g, '')}`
 

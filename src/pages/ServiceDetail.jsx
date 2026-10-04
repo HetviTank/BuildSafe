@@ -6,6 +6,7 @@ import CtaBanner from '../components/sections/CtaBanner'
 import ServicesGrid from '../components/sections/ServicesGrid'
 import Reveal from '../components/ui/Reveal'
 import SectionHeading from '../components/ui/SectionHeading'
+import { SocialIcons } from '../components/ui/SocialLinks'
 import { ServiceArt } from '../components/illustrations'
 import usePageTitle from '../hooks/usePageTitle'
 import { contact, process, telHref } from '../data/company'
@@ -59,6 +60,7 @@ function Sidebar({ current }) {
             <FaEnvelope className="text-brand-400" /> Email us
           </a>
         </div>
+        <SocialIcons size="sm" className="relative mt-6 justify-center" />
       </div>
 
       <div className="flex items-center gap-4 rounded-3xl bg-brand-50 p-6 ring-1 ring-brand-100">

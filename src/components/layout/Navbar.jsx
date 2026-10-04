@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { HiMenuAlt3, HiX } from 'react-icons/hi'
 import { FaPhoneAlt, FaChevronDown } from 'react-icons/fa'
 import Logo from '../ui/Logo'
+import { SocialIcons } from '../ui/SocialLinks'
 import useScrolled from '../../hooks/useScrolled'
 import { contact, navLinks, telHref } from '../../data/company'
 import { services } from '../../data/services'
@@ -200,6 +201,9 @@ export default function Navbar() {
                 <a href={telHref(contact.phones[0])} className="btn-primary w-full">
                   <FaPhoneAlt className="text-xs" /> {contact.phones[0]}
                 </a>
+              </li>
+              <li className="mt-4 flex justify-center">
+                <SocialIcons size="sm" />
               </li>
             </ul>
           </motion.div>

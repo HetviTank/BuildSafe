@@ -4,6 +4,7 @@ import PageBanner from '../components/layout/PageBanner'
 import ContactForm from '../components/sections/ContactForm'
 import { ContactCards, MapEmbed } from '../components/sections/ContactCards'
 import Reveal from '../components/ui/Reveal'
+import { SocialCards } from '../components/ui/SocialLinks'
 import SectionHeading from '../components/ui/SectionHeading'
 import usePageTitle from '../hooks/usePageTitle'
 import { contact, telHref } from '../data/company'
@@ -66,7 +67,21 @@ export default function Contact() {
         </div>
       </section>
 
-      <section className="bg-white pb-24">
+      <section className="relative overflow-hidden bg-slate-50 py-20 sm:py-24">
+        <div className="absolute -left-32 top-0 h-80 w-80 rounded-full bg-brand-500/10 blur-3xl" />
+        <div className="container-x relative">
+          <SectionHeading
+            eyebrow="Stay Connected"
+            title={<>Follow BuildSafe on <span className="text-brand-500">social media</span></>}
+            description="Safety tips, training highlights and updates from our sites — follow us on your favourite platform."
+          />
+          <div className="mt-12">
+            <SocialCards />
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-24">
         <div className="container-x">
           <Reveal>
             <MapEmbed className="h-[26rem]" />
