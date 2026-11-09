@@ -35,8 +35,11 @@ export async function emailLeadViaFormSubmit(lead) {
     })
     const data = await res.json().catch(() => ({}))
     const ok = res.ok && String(data.success) === 'true'
+    // Visible in the browser console (F12) — tells the site owner why email delivery failed.
+    if (!ok) console.warn(`[BuildSafe] FormSubmit email not sent (HTTP ${res.status}):`, data.message ?? data)
     return { ok, needsActivation: !ok && /activat/i.test(data.message ?? '') }
-  } catch {
+  } catch (err) {
+    console.warn('[BuildSafe] FormSubmit request failed:', err)
     return { ok: false }
   }
 }
