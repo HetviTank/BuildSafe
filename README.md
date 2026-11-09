@@ -117,10 +117,12 @@ The floating chat button (bottom-right) opens the **BuildSafe Assistant** — a 
 hydrants, audits, crane/lifting inspection, drills, ISO, civil work, prices, location, hours, area served,
 clients and more, including common typos and greetings (namaste, kem cho).
 
-When a visitor asks for a quote, a callback or a site visit (or taps **Get a free quote**), it collects
-name → mobile (+91, 10 digits) → email → requirement, shows a summary, and on confirmation delivers it
-exactly like the contact form (WhatsApp + both emails, subject "New chat enquiry", including the
-questions the visitor asked). The chat window is code-split and loads only when opened.
+When a visitor asks for a quote, a callback or a site visit — or taps the always-visible **Get a free quote**
+button — a one-screen form opens inside the chat (name, mobile with fixed +91 and number keypad, email,
+service, requirement pre-filled from their question). **Send** delivers it exactly like the contact form
+(WhatsApp + both emails, subject "New chat enquiry"). On phones the chat is full-screen, sized to the area
+above the keyboard, uses 16px text (no iOS zoom) and doesn't pop the keyboard open by itself. The chat window
+is code-split and loads only when opened.
 
 - **Teach it a new answer:** add an entry to `ENTRIES` in `src/lib/assistant.js` (keywords + answer).
 - **Make a sub-service easier to find:** add search words to `ITEM_KEYWORDS` in the same file.

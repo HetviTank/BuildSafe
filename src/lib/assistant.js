@@ -1,8 +1,8 @@
 // BuildSafe website assistant — a rule-based chatbot (no AI service, no API key).
 // It answers from the site's own content (data/services.js, data/company.js, data/clients.js), so when
 // that content changes the answers change with it. When a visitor wants a quote, a site visit or a
-// callback, the chat UI collects their details (see leadStep below) and delivers them like the
-// contact form does (WhatsApp + email).
+// callback, the chat UI opens a short quote form and delivers it like the contact form does
+// (WhatsApp + email).
 //
 // How matching works: the visitor's text is normalised (lower-case, simple stemming, synonyms), then
 // every knowledge entry is scored by the keywords/phrases it contains; the best entry above a
@@ -11,7 +11,7 @@
 import { about, company, contact, industries, process } from '../data/company'
 import { services } from '../data/services'
 import { clients } from '../data/clients'
-import { fieldError, formatPhone, normalizePhone } from './lead'
+import { formatPhone } from './lead'
 
 // ---------------------------------------------------------------------------------------------
 // Text normalisation
@@ -152,10 +152,7 @@ const servicesListAnswer = {
   quick: ['Fire NOC help', 'Get a free quote'],
 }
 
-const leadAnswer = (intro) => ({
-  text: `${intro} Share a few details and our team will contact you shortly — it takes 30 seconds.`,
-  actions: [ACTIONS.lead, ACTIONS.call],
-})
+const leadAnswer = (intro) => ({ text: intro, actions: [ACTIONS.lead, ACTIONS.call] })
 
 const ENTRIES = [
   {
@@ -319,42 +316,7 @@ export function reply(message) {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Lead capture inside the chat: name → phone → email → requirement → send.
 
-export const LEAD_STEPS = ['name', 'phone', 'email', 'message']
-
-const PROMPTS = {
-  name: () => `Great! What's your name?`,
-  phone: (lead) => `Thanks ${lead.name.split(' ')[0]}! What's your mobile number? (10 digits, +91)`,
-  email: () => `And your email address?`,
-  message: (lead) =>
-    lead.service
-      ? `Briefly, what do you need help with? (e.g. site location, type of facility — I'll note it's about ${lead.service})`
-      : `Briefly, what do you need help with? (e.g. Fire NOC, audit, site location)`,
-}
-
-export const leadPrompt = (step, lead) => PROMPTS[step](lead)
-
-const CANCEL = /^(cancel|stop|exit|quit|no|nevermind|never mind|leave it)$/i
-
-/**
- * Advances the chat lead form by one answer.
- * @returns {{ lead, step: string|null, error?: string, cancelled?: boolean, done?: boolean }}
- *          step=null + done=true → ready to send.
- */
-export function leadStep(step, lead, input) {
-  const raw = String(input).trim()
-  if (CANCEL.test(raw)) return { lead, step: null, cancelled: true }
-
-  const value = step === 'phone' ? normalizePhone(raw) : raw
-  const error = step === 'name' && value.length < 2 ? 'Please enter your name' : fieldError(step, value)
-  if (error) return { lead, step, error }
-
-  const next = { ...lead, [step]: value }
-  const i = LEAD_STEPS.indexOf(step)
-  return i === LEAD_STEPS.length - 1 ? { lead: next, step: null, done: true } : { lead: next, step: LEAD_STEPS[i + 1] }
-}
-
-/** Human summary shown before sending. */
+/** Human summary of a lead (used for the WhatsApp fallback message). */
 export const leadSummary = (lead) =>
   [`Name: ${lead.name}`, `Mobile: ${formatPhone(lead.phone)}`, `Email: ${lead.email}`, lead.service && `About: ${lead.service}`, `Need: ${lead.message}`].filter(Boolean)
