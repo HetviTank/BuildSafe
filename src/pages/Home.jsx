@@ -94,7 +94,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="Our Clients"
             title="Trusted by leading organisations"
-            description="From defence and FMCG to chemicals and processing — organisations that take safety seriously work with us."
+            description="From defence, FMCG and manufacturing to chemicals and education — organisations that take safety seriously work with us."
           />
         </div>
         <div className="mt-14">

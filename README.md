@@ -30,6 +30,7 @@ npm run lint
 raw-images/               # Original full-size photos/logos (NOT used by the site)
 ├── gallery/              # Same names as the WebP versions in src/assets/images/gallery/
 └── clients/              # Same names as the WebP versions in src/assets/images/clients/
+api/lead.js               # Serverless function: enquiry form → WhatsApp (CallMeBot)
 public/                   # Copied as-is to dist/: favicon, app icons, og-image.jpg (share preview),
                           # site.webmanifest, hosting config (.htaccess, _headers)
 scripts/prerender.js      # Build step: renders every route to static HTML + sitemap.xml + robots.txt
@@ -68,12 +69,24 @@ All text lives in **`src/data/`** — no component changes needed.
 - **Edit a service page:** change its entry in `services.js` (its `seo` block is the Google title/description).
 - **Add a new service:** add an entry to `services.js` — its page, sitemap entry and structured data are generated automatically.
 
-## Contact form
+## Contact form → WhatsApp leads (CallMeBot)
 
-The site is static (no backend). The enquiry form validates input, then opens the visitor's
-email app (to both company addresses) or WhatsApp with the message pre-filled.
-To receive submissions directly instead, connect a service such as Formspree, EmailJS or Web3Forms
-inside `send()` in `src/components/sections/Contact.jsx`.
+"Send Enquiry" posts the form to `api/lead.js` (a Vercel serverless function), which forwards the
+lead to the business WhatsApp through [CallMeBot](https://www.callmebot.com/blog/free-api-whatsapp-messages/).
+The API key lives only on the server. Spam protection: hidden honeypot field, "submitted too fast" check,
+and a per-IP rate limit. If delivery fails, the visitor gets one-tap WhatsApp / email fallbacks.
+
+**One-time setup**
+
+1. On the phone with the receiving WhatsApp number, save **+34 644 91 07 79** as a contact and send it:
+   `I allow callmebot to send me messages` — the bot replies with your API key.
+2. In Vercel → Project → Settings → **Environment Variables**, add (for Production *and* Preview):
+   - `CALLMEBOT_PHONE` = the receiving number with country code, e.g. `+917990704863`
+   - `CALLMEBOT_APIKEY` = the key from step 1
+3. Redeploy (Deployments → ⋯ → Redeploy), then send a test enquiry from `/contact`.
+
+For local testing copy `.env.example` to `.env.local`, fill in the key and run `npm run dev`.
+If messages stop arriving, check Vercel → Project → Logs for lines starting with `lead:`.
 
 ## SEO
 

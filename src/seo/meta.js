@@ -28,7 +28,7 @@ const pages = {
   '/gallery': {
     title: 'Gallery – Safety Training & Fire Drills | BuildSafe Enterprise',
     description:
-      'Photos of BuildSafe Enterprise safety training sessions, fire extinguisher demonstrations and workplace safety programmes across Kutch, Gujarat.',
+      'Photos of BuildSafe Enterprise safety training, fire extinguisher and hydrant drills, emergency rescue drills and toolbox talks across Kutch, Gujarat.',
     crumb: 'Gallery',
   },
   '/contact': {

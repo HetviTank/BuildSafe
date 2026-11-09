@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { FaPaperPlane, FaWhatsapp, FaCheckCircle } from 'react-icons/fa'
+import { FaPaperPlane, FaWhatsapp, FaCheckCircle, FaEnvelope, FaSpinner } from 'react-icons/fa'
 import { company, contact } from '../../data/company'
 import { services } from '../../data/services'
 
@@ -37,13 +37,20 @@ function Field({ label, error, ...props }) {
 }
 
 /**
- * Static-site enquiry form: validates, then opens the visitor's email app or WhatsApp
- * with the message pre-filled. Swap `send` for an API call to receive submissions directly.
+ * Enquiry form. "Send Enquiry" posts to /api/lead, which forwards the lead to the business
+ * WhatsApp via CallMeBot (see api/lead.js). "WhatsApp us" opens a pre-filled chat instead.
+ * If delivery fails, the visitor is offered WhatsApp / email fallbacks so the lead isn't lost.
  */
 export default function ContactForm({ defaultService = '' }) {
   const [form, setForm] = useState({ ...initialForm, service: defaultService })
   const [errors, setErrors] = useState({})
   const [sent, setSent] = useState(false)
+  const [status, setStatus] = useState('idle') // idle | sending | error
+  const [failedLead, setFailedLead] = useState(null)
+  const openedAt = useRef(0) // when the form appeared — used for the server's "too fast = bot" check
+  useEffect(() => {
+    openedAt.current = performance.now()
+  }, [])
 
   const update = (e) => {
     const { name, value } = e.target
@@ -51,20 +58,58 @@ export default function ContactForm({ defaultService = '' }) {
     if (errors[name]) setErrors((err) => ({ ...err, [name]: undefined }))
   }
 
-  const send = (channel) => {
+  const openWhatsApp = (data) =>
+    window.open(`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(buildMessage(data))}`, '_blank', 'noopener')
+
+  const openEmail = (data) => {
+    const subject = `Enquiry from ${data.name}${data.service ? ` — ${data.service}` : ''}`
+    window.location.href = `mailto:${contact.emails[0]}?cc=${contact.emails[1]}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(buildMessage(data))}`
+  }
+
+  const isValid = () => {
     const found = validate(form)
     setErrors(found)
-    if (Object.keys(found).length) return
+    return Object.keys(found).length === 0
+  }
 
-    const body = buildMessage(form)
-    if (channel === 'whatsapp') {
-      window.open(`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(body)}`, '_blank', 'noopener')
-    } else {
-      const subject = `Enquiry from ${form.name}${form.service ? ` — ${form.service}` : ''}`
-      window.location.href = `mailto:${contact.emails[0]}?cc=${contact.emails[1]}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    }
+  const finish = () => {
     setSent(true)
-    setForm(initialForm)
+    setStatus('idle')
+    setForm({ ...initialForm, service: defaultService })
+  }
+
+  const submit = async (e) => {
+    e.preventDefault()
+    if (status === 'sending' || !isValid()) return
+    setStatus('sending')
+    try {
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...form,
+          website: e.currentTarget.elements.website?.value ?? '', // honeypot, empty for real visitors
+          page: window.location.pathname + window.location.search,
+          elapsed: Math.round(performance.now() - openedAt.current),
+        }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (res.ok && data.ok) return finish()
+      if (res.status === 422 && data.errors) {
+        setErrors(data.errors)
+        return setStatus('idle')
+      }
+      throw new Error(data.error || `HTTP ${res.status}`)
+    } catch {
+      setFailedLead(form)
+      setStatus('error')
+    }
+  }
+
+  const sendViaWhatsApp = () => {
+    if (!isValid()) return
+    openWhatsApp(form)
+    finish()
   }
 
   return (
@@ -88,7 +133,7 @@ export default function ContactForm({ defaultService = '' }) {
             </motion.span>
             <h3 className="mt-6 text-2xl font-bold">Thank you!</h3>
             <p className="mt-2 max-w-sm text-slate-600">
-              Your message is ready to send in your email or WhatsApp app. The {company.shortName} team will get back to you shortly.
+              We have received your enquiry. The {company.shortName} team will contact you shortly.
             </p>
             <button type="button" onClick={() => setSent(false)} className="btn-outline mt-6">
               Send another enquiry
@@ -97,10 +142,7 @@ export default function ContactForm({ defaultService = '' }) {
         ) : (
           <motion.form
             key="form"
-            onSubmit={(e) => {
-              e.preventDefault()
-              send('email')
-            }}
+            onSubmit={submit}
             noValidate
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -108,6 +150,9 @@ export default function ContactForm({ defaultService = '' }) {
           >
             <h3 className="text-2xl font-bold">Request a consultation</h3>
             <p className="mt-1 text-sm text-slate-500">Fields marked * are required.</p>
+
+            {/* Honeypot: hidden from people, bots tend to fill it in. */}
+            <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
 
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               <Field label="Full Name *" name="name" value={form.name} onChange={update} error={errors.name} placeholder="Your name" autoComplete="name" />
@@ -139,12 +184,28 @@ export default function ContactForm({ defaultService = '' }) {
               </label>
             </div>
 
+            {status === 'error' && failedLead && (
+              <div role="alert" className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+                <p className="font-semibold">Sorry, we couldn&apos;t send your enquiry automatically.</p>
+                <p className="mt-1">Please send it with one tap instead — your details are already filled in:</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button type="button" onClick={() => { openWhatsApp(failedLead); finish() }} className="btn bg-[#25D366] px-4 py-2 text-white hover:bg-[#1ebe5a]">
+                    <FaWhatsapp /> Send on WhatsApp
+                  </button>
+                  <button type="button" onClick={() => { openEmail(failedLead); finish() }} className="btn-outline px-4 py-2">
+                    <FaEnvelope /> Send by Email
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <button type="submit" className="btn-primary flex-1">
-                <FaPaperPlane /> Send via Email
+              <button type="submit" disabled={status === 'sending'} className="btn-primary flex-1 disabled:cursor-wait disabled:opacity-70">
+                {status === 'sending' ? <FaSpinner className="animate-spin" /> : <FaPaperPlane />}
+                {status === 'sending' ? 'Sending…' : 'Send Enquiry'}
               </button>
-              <button type="button" onClick={() => send('whatsapp')} className="btn flex-1 bg-[#25D366] text-white hover:-translate-y-0.5 hover:bg-[#1ebe5a]">
-                <FaWhatsapp className="text-lg" /> Send via WhatsApp
+              <button type="button" onClick={sendViaWhatsApp} className="btn flex-1 bg-[#25D366] text-white hover:-translate-y-0.5 hover:bg-[#1ebe5a]">
+                <FaWhatsapp className="text-lg" /> WhatsApp us
               </button>
             </div>
           </motion.form>

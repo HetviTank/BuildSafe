@@ -2,23 +2,33 @@
 // `wide: true` makes the photo span two columns in the full gallery.
 // Photos whose category matches a service's `art` key also appear on that service page.
 
-import fireDrill from '../assets/images/gallery/fire-drill-training.webp'
-import videoSession from '../assets/images/gallery/safety-video-session.webp'
-import trainingGroup from '../assets/images/gallery/training-group.webp'
-import safetySession from '../assets/images/gallery/workplace-safety-session.webp'
-import classroomBriefing from '../assets/images/gallery/classroom-safety-briefing.webp'
-import classroomPresentation from '../assets/images/gallery/classroom-presentation.webp'
+import plantBriefing from '../assets/images/gallery/plant-safety-briefing.webp'
+import extinguisherDemo from '../assets/images/gallery/fire-extinguisher-demonstration.webp'
+import hydrantDrill from '../assets/images/gallery/fire-hydrant-hose-drill.webp'
+import factoryFloor from '../assets/images/gallery/factory-floor-safety-training.webp'
+import cleanroom from '../assets/images/gallery/cleanroom-staff-training.webp'
+import toolboxTalk from '../assets/images/gallery/warehouse-toolbox-talk.webp'
+import panelWalkthrough from '../assets/images/gallery/electrical-panel-safety-walkthrough.webp'
+import stretcherDrill from '../assets/images/gallery/emergency-rescue-stretcher-drill.webp'
+import classroom from '../assets/images/gallery/classroom-safety-training.webp'
+import awarenessSession from '../assets/images/gallery/workplace-safety-awareness-session.webp'
 
 export const galleryCategories = [
   { id: 'all', label: 'All' },
   { id: 'training', label: 'Training' },
 ]
 
+// Order matters: on large screens this fills the 3-column grid exactly (two wide tiles),
+// and the Home page shows the first 6.
 export const gallery = [
-  { src: trainingGroup, title: 'Safety Training Batch', category: 'training', wide: true },
-  { src: fireDrill, title: 'Fire Extinguisher Demonstration for Workers', category: 'training' },
-  { src: safetySession, title: 'Workplace Safety Awareness Session', category: 'training' },
-  { src: classroomBriefing, title: 'Safety Induction Briefing for Site Workers', category: 'training' },
-  { src: classroomPresentation, title: 'Classroom Safety Training Presentation', category: 'training' },
-  { src: videoSession, title: 'Construction Safety Video Training', category: 'training', wide: true, position: 'object-[50%_32%]' },
+  { src: plantBriefing, title: 'Plant Safety Briefing for Staff', category: 'training', wide: true },
+  { src: extinguisherDemo, title: 'Fire Extinguisher Live Demonstration', category: 'training', position: 'object-[50%_32%]' },
+  { src: hydrantDrill, title: 'Fire Hydrant Hose Drill', category: 'training' },
+  { src: factoryFloor, title: 'Safety Awareness Training on the Factory Floor', category: 'training', wide: true },
+  { src: cleanroom, title: 'Safety Training for Cleanroom Staff', category: 'training' },
+  { src: toolboxTalk, title: 'Toolbox Talk for Warehouse Workers', category: 'training' },
+  { src: panelWalkthrough, title: 'Electrical Panel Room Safety Walkthrough', category: 'training' },
+  { src: stretcherDrill, title: 'Emergency Rescue & Stretcher Drill', category: 'training' },
+  { src: classroom, title: 'Classroom Safety Training Session', category: 'training' },
+  { src: awarenessSession, title: 'Workplace Safety Awareness Session', category: 'training' },
 ]
