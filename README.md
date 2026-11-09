@@ -37,7 +37,6 @@ scripts/prerender.js      # Build step: renders every route to static HTML + sit
 src/
 ├── assets/images/        # Optimised WebP photos used by the site (brand/, clients/, gallery/)
 ├── components/
-│   ├── chat/             # ChatWidget (launcher) + ChatPanel (lazy-loaded chat window)
 │   ├── illustrations/    # Custom animated SVG artwork, one per service
 │   ├── layout/           # Layout (page transitions), Navbar, Footer, PageBanner, ...
 │   ├── sections/         # Reusable blocks: Hero, ServicesGrid, GalleryGrid, ContactForm, ...
@@ -49,7 +48,6 @@ src/
 │   └── gallery.js        # Gallery photos & artwork
 ├── hooks/                # useSeo, useScrolled
 ├── lib/
-│   ├── assistant.js      # Chat assistant brain: knowledge base, matching, lead steps
 │   ├── deliverLead.js    # Sends a lead: server (WhatsApp/email) + FormSubmit email fallback
 │   ├── lead.js           # Enquiry-form validation rules (shared with api/lead.js)
 │   └── formsubmit.js     # No-key email delivery of enquiries (FormSubmit)
@@ -108,24 +106,6 @@ Optional overrides: `CALLMEBOT_PHONE` (default `+917990704863`), `GMAIL_USER`
 Then redeploy (Deployments → ⋯ → Redeploy) and send a test enquiry from `/contact`.
 For local testing copy `.env.example` to `.env.local` and run `npm run dev`.
 If leads stop arriving, check Vercel → Project → **Logs** for lines starting with `lead:`.
-
-## Chat assistant (no AI key)
-
-The floating chat button (bottom-right) opens the **BuildSafe Assistant** — a rule-based chatbot in
-`src/lib/assistant.js` that answers from the site's own content (`src/data/services.js`, `company.js`,
-`clients.js`), so editing the content updates the answers. It understands Fire NOC, extinguishers,
-hydrants, audits, crane/lifting inspection, drills, ISO, civil work, prices, location, hours, area served,
-clients and more, including common typos and greetings (namaste, kem cho).
-
-When a visitor asks for a quote, a callback or a site visit — or taps the always-visible **Get a free quote**
-button — a one-screen form opens inside the chat (name, mobile with fixed +91 and number keypad, email,
-service, requirement pre-filled from their question). **Send** delivers it exactly like the contact form
-(WhatsApp + both emails, subject "New chat enquiry"). On phones the chat is full-screen, sized to the area
-above the keyboard, uses 16px text (no iOS zoom) and doesn't pop the keyboard open by itself. The chat window
-is code-split and loads only when opened.
-
-- **Teach it a new answer:** add an entry to `ENTRIES` in `src/lib/assistant.js` (keywords + answer).
-- **Make a sub-service easier to find:** add search words to `ITEM_KEYWORDS` in the same file.
 
 ## SEO
 

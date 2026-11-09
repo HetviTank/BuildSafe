@@ -57,7 +57,7 @@ const rows = (lead) =>
 
 function whatsappText(lead) {
   return [
-    `🔔 *New ${lead.source === 'Website chat' ? 'chat' : 'website'} enquiry — BuildSafe*`,
+    `🔔 *New website enquiry — BuildSafe*`,
     '',
     ...rows(lead).map(([k, v]) => `*${k}:* ${v}`),
     '',
@@ -104,7 +104,7 @@ async function sendEmail(lead) {
     from: `"BuildSafe Website" <${user}>`,
     to: env('LEAD_EMAIL_TO'),
     replyTo: `"${lead.name.replace(/"/g, '')}" <${lead.email}>`,
-    subject: `New ${lead.source === 'Website chat' ? 'chat ' : ''}enquiry: ${lead.name}${lead.service ? ` — ${lead.service}` : ''}`,
+    subject: `New enquiry: ${lead.name}${lead.service ? ` — ${lead.service}` : ''}`,
     text: whatsappText(lead).replace(/\*/g, ''),
     html: emailHtml(lead),
   })

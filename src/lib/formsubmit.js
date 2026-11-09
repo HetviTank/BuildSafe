@@ -26,7 +26,7 @@ export async function emailLeadViaFormSubmit(lead) {
         Message: lead.message,
         Source: lead.source || 'Website',
         Page: window.location.pathname + window.location.search,
-        _subject: `New ${lead.source === 'Website chat' ? 'chat ' : ''}enquiry: ${lead.name}${lead.service ? ` — ${lead.service}` : ''}`,
+        _subject: `New enquiry: ${lead.name}${lead.service ? ` — ${lead.service}` : ''}`,
         _cc: contact.emails.slice(1).join(','),
         _template: 'table',
         _captcha: 'false',
