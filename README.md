@@ -30,13 +30,14 @@ npm run lint
 raw-images/               # Original full-size photos/logos (NOT used by the site)
 ├── gallery/              # Same names as the WebP versions in src/assets/images/gallery/
 └── clients/              # Same names as the WebP versions in src/assets/images/clients/
-api/lead.js               # Serverless function: enquiry form → WhatsApp (CallMeBot)
+api/lead.js               # Serverless function: enquiry form → WhatsApp (CallMeBot) + email (Gmail)
 public/                   # Copied as-is to dist/: favicon, app icons, og-image.jpg (share preview),
                           # site.webmanifest, hosting config (.htaccess, _headers)
 scripts/prerender.js      # Build step: renders every route to static HTML + sitemap.xml + robots.txt
 src/
 ├── assets/images/        # Optimised WebP photos used by the site (brand/, clients/, gallery/)
 ├── components/
+│   ├── chat/             # ChatWidget (launcher) + ChatPanel (lazy-loaded chat window)
 │   ├── illustrations/    # Custom animated SVG artwork, one per service
 │   ├── layout/           # Layout (page transitions), Navbar, Footer, PageBanner, ...
 │   ├── sections/         # Reusable blocks: Hero, ServicesGrid, GalleryGrid, ContactForm, ...
@@ -47,6 +48,11 @@ src/
 │   ├── clients.js        # Client list
 │   └── gallery.js        # Gallery photos & artwork
 ├── hooks/                # useSeo, useScrolled
+├── lib/
+│   ├── assistant.js      # Chat assistant brain: knowledge base, matching, lead steps
+│   ├── deliverLead.js    # Sends a lead: server (WhatsApp/email) + FormSubmit email fallback
+│   ├── lead.js           # Enquiry-form validation rules (shared with api/lead.js)
+│   └── formsubmit.js     # No-key email delivery of enquiries (FormSubmit)
 ├── pages/                # One file per route
 ├── seo/
 │   ├── config.js         # SITE_URL (live domain), business address, share image
@@ -69,24 +75,55 @@ All text lives in **`src/data/`** — no component changes needed.
 - **Edit a service page:** change its entry in `services.js` (its `seo` block is the Google title/description).
 - **Add a new service:** add an entry to `services.js` — its page, sitemap entry and structured data are generated automatically.
 
-## Contact form → WhatsApp leads (CallMeBot)
+## Contact form → WhatsApp + email leads
 
-"Send Enquiry" posts the form to `api/lead.js` (a Vercel serverless function), which forwards the
-lead to the business WhatsApp through [CallMeBot](https://www.callmebot.com/blog/free-api-whatsapp-messages/).
-The API key lives only on the server. Spam protection: hidden honeypot field, "submitted too fast" check,
-and a per-IP rate limit. If delivery fails, the visitor gets one-tap WhatsApp / email fallbacks.
+When a visitor clicks **Send Enquiry**, the lead is delivered automatically to:
 
-**One-time setup**
+- **buildsafeenterprise@gmail.com + admin.buildsafe@gmail.com** — works with **no API keys**: the browser
+  sends it through [FormSubmit](https://formsubmit.co) (`src/lib/formsubmit.js`). If a Gmail app password is
+  configured, the server sends it from the company Gmail instead (no duplicates). *Reply* answers the visitor.
+- **WhatsApp +91 79907 04863** — via [CallMeBot](https://www.callmebot.com/blog/free-api-whatsapp-messages/)
+  from `api/lead.js`, once `CALLMEBOT_APIKEY` is set (WhatsApp always needs the number owner's one-time permission).
 
-1. On the phone with the receiving WhatsApp number, save **+34 644 91 07 79** as a contact and send it:
-   `I allow callmebot to send me messages` — the bot replies with your API key.
-2. In Vercel → Project → Settings → **Environment Variables**, add (for Production *and* Preview):
-   - `CALLMEBOT_PHONE` = the receiving number with country code, e.g. `+917990704863`
-   - `CALLMEBOT_APIKEY` = the key from step 1
-3. Redeploy (Deployments → ⋯ → Redeploy), then send a test enquiry from `/contact`.
+The visitor sees "Thank you" when any channel delivered it; only if everything fails do they get one-tap
+WhatsApp / email fallbacks. Form rules (shared by browser and server, in `src/lib/lead.js`):
+name, mobile (fixed +91, exactly 10 digits starting 6–9), valid email, and message are required;
+fields are checked live as the visitor types. Spam protection: hidden honeypot field,
+"submitted too fast" check, and a per-IP rate limit. Secrets stay on the server.
 
-For local testing copy `.env.example` to `.env.local`, fill in the key and run `npm run dev`.
-If messages stop arriving, check Vercel → Project → Logs for lines starting with `lead:`.
+**Activate email (once, required):** after deploying, submit one test enquiry on `/contact`. FormSubmit emails
+buildsafeenterprise@gmail.com an **"Activate Form"** link (check Spam/Promotions too) — click it. Every
+enquiry after that arrives in both inboxes automatically.
+
+**WhatsApp setup (and optional Gmail sending)** — Vercel → Project → Settings → **Environment Variables** (Production + Preview):
+
+| Variable | Value |
+| --- | --- |
+| `CALLMEBOT_APIKEY` | On the phone with +91 79907 04863, save **+34 644 91 07 79** as a contact and WhatsApp it `I allow callmebot to send me messages` — it replies with the key |
+| `GMAIL_APP_PASSWORD` *(optional — replaces FormSubmit)* | Sign in to buildsafeenterprise@gmail.com → [Google Account → Security](https://myaccount.google.com/security) → turn on 2-Step Verification → [App passwords](https://myaccount.google.com/apppasswords) → create one named "Website" → copy the 16-character password |
+
+Optional overrides: `CALLMEBOT_PHONE` (default `+917990704863`), `GMAIL_USER`
+(default `buildsafeenterprise@gmail.com`), `LEAD_EMAIL_TO` (default both BuildSafe addresses, comma-separated).
+
+Then redeploy (Deployments → ⋯ → Redeploy) and send a test enquiry from `/contact`.
+For local testing copy `.env.example` to `.env.local` and run `npm run dev`.
+If leads stop arriving, check Vercel → Project → **Logs** for lines starting with `lead:`.
+
+## Chat assistant (no AI key)
+
+The floating chat button (bottom-right) opens the **BuildSafe Assistant** — a rule-based chatbot in
+`src/lib/assistant.js` that answers from the site's own content (`src/data/services.js`, `company.js`,
+`clients.js`), so editing the content updates the answers. It understands Fire NOC, extinguishers,
+hydrants, audits, crane/lifting inspection, drills, ISO, civil work, prices, location, hours, area served,
+clients and more, including common typos and greetings (namaste, kem cho).
+
+When a visitor asks for a quote, a callback or a site visit (or taps **Get a free quote**), it collects
+name → mobile (+91, 10 digits) → email → requirement, shows a summary, and on confirmation delivers it
+exactly like the contact form (WhatsApp + both emails, subject "New chat enquiry", including the
+questions the visitor asked). The chat window is code-split and loads only when opened.
+
+- **Teach it a new answer:** add an entry to `ENTRIES` in `src/lib/assistant.js` (keywords + answer).
+- **Make a sub-service easier to find:** add search words to `ITEM_KEYWORDS` in the same file.
 
 ## SEO
 

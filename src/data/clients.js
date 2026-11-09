@@ -21,7 +21,7 @@ export const clients = [
   { name: 'Shreeji Group', logo: shreejiGroup },
   { name: 'Shree Ram Group', logo: shreeRamGroup },
   { name: 'BKT', logo: bkt },
-  { name: 'Canawil Wire And Engineering Ltd.', logo: canawil },
+  { name: 'Anawil Wire And Engineering Ltd.', logo: canawil },
   { name: 'Happy Valley Public School', logo: happyValley },
   { name: 'GKN Groups', logo: gknGroups },
 ]

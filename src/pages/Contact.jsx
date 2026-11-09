@@ -1,13 +1,17 @@
 import { useSearchParams } from 'react-router-dom'
-import { FaPhoneAlt, FaWhatsapp } from 'react-icons/fa'
 import PageBanner from '../components/layout/PageBanner'
 import ContactForm from '../components/sections/ContactForm'
 import { ContactCards, MapEmbed } from '../components/sections/ContactCards'
 import Reveal from '../components/ui/Reveal'
 import { SocialCards } from '../components/ui/SocialLinks'
 import SectionHeading from '../components/ui/SectionHeading'
-import { contact, telHref } from '../data/company'
 import { getService } from '../data/services'
+
+const nextSteps = [
+  { title: 'Your enquiry reaches our team instantly', text: 'Submitting the form sends your details straight to the BuildSafe team on WhatsApp and email.' },
+  { title: 'We get in touch', text: 'Our team contacts you on the mobile number or email you shared to understand your site and requirement.' },
+  { title: 'Free quote & next steps', text: 'You get a clear scope and quotation — Fire NOC, audit, inspection, training or civil work.' },
+]
 
 export default function Contact() {
   const [params] = useSearchParams()
@@ -37,26 +41,19 @@ export default function Contact() {
               title="Tell us about your requirement"
               description="Whether it is a Fire NOC, a safety audit, equipment inspection or a civil project — we will guide you through the next steps."
             />
-            <Reveal delay={0.2} className="mt-8 space-y-4">
-              <a href={telHref(contact.phones[0])} className="group flex items-center gap-4 rounded-2xl bg-ink-900 p-5 text-white transition hover:bg-brand-500">
-                <span className="relative grid h-12 w-12 place-items-center rounded-full bg-brand-500 transition group-hover:bg-white group-hover:text-brand-500">
-                  <span className="absolute inset-0 animate-pulse-ring rounded-full bg-brand-500" />
-                  <FaPhoneAlt className="relative" />
-                </span>
-                <span>
-                  <span className="block text-xs uppercase tracking-widest text-slate-400 group-hover:text-brand-100">Emergency? Call now</span>
-                  <span className="block font-display text-lg font-bold">{contact.phones[0]}</span>
-                </span>
-              </a>
-              <a href={`https://wa.me/${contact.whatsapp}`} target="_blank" rel="noreferrer" className="flex items-center gap-4 rounded-2xl bg-[#25D366]/10 p-5 transition hover:bg-[#25D366]/20">
-                <span className="grid h-12 w-12 place-items-center rounded-full bg-[#25D366] text-2xl text-white">
-                  <FaWhatsapp />
-                </span>
-                <span>
-                  <span className="block text-xs uppercase tracking-widest text-slate-500">Quick response</span>
-                  <span className="block font-display text-lg font-bold text-ink-900">Chat on WhatsApp</span>
-                </span>
-              </a>
+            <Reveal delay={0.2} className="mt-8">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-500">What happens next</p>
+              <ol className="mt-5 space-y-5">
+                {nextSteps.map((step, i) => (
+                  <li key={step.title} className="flex gap-4">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-500/10 font-display text-sm font-bold text-brand-600">{i + 1}</span>
+                    <span>
+                      <span className="block font-semibold text-ink-900">{step.title}</span>
+                      <span className="mt-0.5 block text-sm leading-relaxed text-slate-600">{step.text}</span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
             </Reveal>
           </div>
           <Reveal delay={0.1} className="lg:col-span-3">

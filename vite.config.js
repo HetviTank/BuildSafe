@@ -5,14 +5,14 @@ import { defineConfig, loadEnv } from 'vite'
 /**
  * Dev only: serve the Vercel function in api/lead.js at /api/lead during `npm run dev`,
  * so the enquiry form can be tested locally. On Vercel the platform runs it instead.
- * Reads CALLMEBOT_* from .env.local.
+ * Reads CALLMEBOT_*, GMAIL_* and LEAD_* from .env.local.
  */
 function devApi() {
   return {
     name: 'dev-api',
     apply: 'serve',
     configureServer(server) {
-      Object.assign(process.env, loadEnv(server.config.mode, server.config.root, 'CALLMEBOT_'))
+      Object.assign(process.env, loadEnv(server.config.mode, server.config.root, ['CALLMEBOT_', 'GMAIL_', 'LEAD_']))
       server.middlewares.use('/api/lead', async (req, res) => {
         try {
           const chunks = []

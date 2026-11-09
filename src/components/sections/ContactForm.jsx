@@ -3,47 +3,61 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { FaPaperPlane, FaWhatsapp, FaCheckCircle, FaEnvelope, FaSpinner } from 'react-icons/fa'
 import { company, contact } from '../../data/company'
 import { services } from '../../data/services'
+import { PHONE_PREFIX, fieldError, formatPhone, normalizePhone, validateLead } from '../../lib/lead'
+import { deliverLead } from '../../lib/deliverLead'
 
 const initialForm = { name: '', company: '', phone: '', email: '', service: '', message: '' }
-
-function validate(form) {
-  const errors = {}
-  if (!form.name.trim()) errors.name = 'Please enter your name'
-  if (!/^[+\d][\d\s-]{7,}$/.test(form.phone.trim())) errors.phone = 'Please enter a valid phone number'
-  if (form.email && !/^\S+@\S+\.\S+$/.test(form.email)) errors.email = 'Please enter a valid email'
-  if (!form.message.trim()) errors.message = 'Please tell us how we can help'
-  return errors
-}
 
 function buildMessage(form) {
   const details = [
     `Name: ${form.name}`,
     form.company && `Company: ${form.company}`,
-    `Phone: ${form.phone}`,
+    `Phone: ${formatPhone(form.phone)}`,
     form.email && `Email: ${form.email}`,
     form.service && `Service: ${form.service}`,
   ].filter(Boolean)
   return `${details.join('\n')}\n\n${form.message}`
 }
 
-function Field({ label, error, ...props }) {
+function Field({ label, error, prefix, ...props }) {
+  const id = `lead-${props.name}`
+  const input = (
+    <input
+      {...props}
+      id={id}
+      className={`field ${prefix ? 'rounded-l-none!' : ''} ${error ? 'border-red-400!' : ''}`}
+      aria-invalid={!!error}
+      aria-describedby={error ? `${id}-error` : undefined}
+    />
+  )
   return (
-    <label className="block">
-      <span className="mb-2 block text-sm font-semibold text-ink-900">{label}</span>
-      <input {...props} className={`field ${error ? 'border-red-400!' : ''}`} aria-invalid={!!error} />
-      {error && <span className="mt-1 block text-xs text-red-500">{error}</span>}
-    </label>
+    <div>
+      <label htmlFor={id} className="mb-2 block text-sm font-semibold text-ink-900">{label}</label>
+      {prefix ? (
+        <div className="flex">
+          <span className="inline-flex shrink-0 select-none items-center rounded-l-xl border border-r-0 border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-ink-900">
+            {prefix}
+          </span>
+          {input}
+        </div>
+      ) : (
+        input
+      )}
+      {error && <span id={`${id}-error`} className="mt-1 block text-xs text-red-500">{error}</span>}
+    </div>
   )
 }
 
 /**
- * Enquiry form. "Send Enquiry" posts to /api/lead, which forwards the lead to the business
- * WhatsApp via CallMeBot (see api/lead.js). "WhatsApp us" opens a pre-filled chat instead.
- * If delivery fails, the visitor is offered WhatsApp / email fallbacks so the lead isn't lost.
+ * Enquiry form. "Send Enquiry" delivers the lead automatically to the business WhatsApp and the
+ * BuildSafe email inboxes (see src/lib/deliverLead.js). Fields are checked as the
+ * visitor types (rules in src/lib/lead.js, shared with the server). If delivery fails, the visitor
+ * is offered one-tap WhatsApp / email fallbacks so the lead isn't lost.
  */
 export default function ContactForm({ defaultService = '' }) {
   const [form, setForm] = useState({ ...initialForm, service: defaultService })
   const [errors, setErrors] = useState({})
+  const [touched, setTouched] = useState({}) // fields the visitor has left at least once
   const [sent, setSent] = useState(false)
   const [status, setStatus] = useState('idle') // idle | sending | error
   const [failedLead, setFailedLead] = useState(null)
@@ -52,10 +66,18 @@ export default function ContactForm({ defaultService = '' }) {
     openedAt.current = performance.now()
   }, [])
 
+  // Live validation: once a field has been visited (or already shows an error), re-check it on every keystroke.
   const update = (e) => {
-    const { name, value } = e.target
+    const { name } = e.target
+    const value = name === 'phone' ? normalizePhone(e.target.value) : e.target.value
     setForm((f) => ({ ...f, [name]: value }))
-    if (errors[name]) setErrors((err) => ({ ...err, [name]: undefined }))
+    if (touched[name] || errors[name]) setErrors((err) => ({ ...err, [name]: fieldError(name, value) }))
+  }
+
+  const blur = (e) => {
+    const { name, value } = e.target
+    setTouched((t) => ({ ...t, [name]: true }))
+    if (value) setErrors((err) => ({ ...err, [name]: fieldError(name, value) })) // don't nag about fields skipped by tabbing
   }
 
   const openWhatsApp = (data) =>
@@ -67,50 +89,38 @@ export default function ContactForm({ defaultService = '' }) {
   }
 
   const isValid = () => {
-    const found = validate(form)
+    const found = validateLead(form)
     setErrors(found)
-    return Object.keys(found).length === 0
+    setTouched({ name: true, phone: true, email: true, message: true })
+    const first = Object.keys(found)[0]
+    if (first) document.getElementById(`lead-${first}`)?.focus()
+    return !first
   }
 
   const finish = () => {
     setSent(true)
     setStatus('idle')
     setForm({ ...initialForm, service: defaultService })
+    setTouched({})
+    setErrors({})
   }
 
+  // Delivery (server WhatsApp/email + browser email fallback) lives in src/lib/deliverLead.js.
   const submit = async (e) => {
     e.preventDefault()
     if (status === 'sending' || !isValid()) return
+    const honeypot = e.currentTarget.elements.website?.value ?? '' // hidden field — only bots fill it in
     setStatus('sending')
-    try {
-      const res = await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...form,
-          website: e.currentTarget.elements.website?.value ?? '', // honeypot, empty for real visitors
-          page: window.location.pathname + window.location.search,
-          elapsed: Math.round(performance.now() - openedAt.current),
-        }),
-      })
-      const data = await res.json().catch(() => ({}))
-      if (res.ok && data.ok) return finish()
-      if (res.status === 422 && data.errors) {
-        setErrors(data.errors)
-        return setStatus('idle')
-      }
-      throw new Error(data.error || `HTTP ${res.status}`)
-    } catch {
-      setFailedLead(form)
-      setStatus('error')
+    const result = await deliverLead(form, { source: 'Contact form', honeypot, startedAt: openedAt.current })
+    if (result.ok) return finish()
+    if (result.errors) {
+      setErrors(result.errors)
+      return setStatus('idle')
     }
+    setFailedLead(form)
+    setStatus('error')
   }
 
-  const sendViaWhatsApp = () => {
-    if (!isValid()) return
-    openWhatsApp(form)
-    finish()
-  }
 
   return (
     <div className="relative h-full rounded-3xl bg-white p-6 shadow-xl shadow-ink-900/5 ring-1 ring-slate-100 sm:p-10">
@@ -155,10 +165,23 @@ export default function ContactForm({ defaultService = '' }) {
             <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
 
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
-              <Field label="Full Name *" name="name" value={form.name} onChange={update} error={errors.name} placeholder="Your name" autoComplete="name" />
-              <Field label="Company" name="company" value={form.company} onChange={update} placeholder="Company / site name" autoComplete="organization" />
-              <Field label="Phone *" name="phone" type="tel" value={form.phone} onChange={update} error={errors.phone} placeholder="+91 98765 43210" autoComplete="tel" />
-              <Field label="Email" name="email" type="email" value={form.email} onChange={update} error={errors.email} placeholder="you@company.com" autoComplete="email" />
+              <Field label="Full Name *" name="name" value={form.name} onChange={update} onBlur={blur} error={errors.name} placeholder="Your name" autoComplete="name" maxLength={80} />
+              <Field label="Company" name="company" value={form.company} onChange={update} placeholder="Company / site name" autoComplete="organization" maxLength={120} />
+              <Field
+                label="Mobile Number *"
+                name="phone"
+                type="tel"
+                prefix={PHONE_PREFIX}
+                inputMode="numeric"
+                maxLength={10}
+                value={form.phone}
+                onChange={update}
+                onBlur={blur}
+                error={errors.phone}
+                placeholder="98765 43210"
+                autoComplete="tel-national"
+              />
+              <Field label="Email *" name="email" type="email" inputMode="email" value={form.email} onChange={update} onBlur={blur} error={errors.email} placeholder="you@company.com" autoComplete="email" maxLength={120} />
               <label className="block sm:col-span-2">
                 <span className="mb-2 block text-sm font-semibold text-ink-900">Service Required</span>
                 <select name="service" value={form.service} onChange={update} className="field">
@@ -172,15 +195,19 @@ export default function ContactForm({ defaultService = '' }) {
               <label className="block sm:col-span-2">
                 <span className="mb-2 block text-sm font-semibold text-ink-900">Message *</span>
                 <textarea
+                  id="lead-message"
                   name="message"
                   rows={5}
+                  maxLength={1500}
                   value={form.message}
                   onChange={update}
+                  onBlur={blur}
                   placeholder="Tell us about your site and requirement…"
                   className={`field resize-none ${errors.message ? 'border-red-400!' : ''}`}
                   aria-invalid={!!errors.message}
+                  aria-describedby={errors.message ? 'lead-message-error' : undefined}
                 />
-                {errors.message && <span className="mt-1 block text-xs text-red-500">{errors.message}</span>}
+                {errors.message && <span id="lead-message-error" className="mt-1 block text-xs text-red-500">{errors.message}</span>}
               </label>
             </div>
 
@@ -199,15 +226,10 @@ export default function ContactForm({ defaultService = '' }) {
               </div>
             )}
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <button type="submit" disabled={status === 'sending'} className="btn-primary flex-1 disabled:cursor-wait disabled:opacity-70">
-                {status === 'sending' ? <FaSpinner className="animate-spin" /> : <FaPaperPlane />}
-                {status === 'sending' ? 'Sending…' : 'Send Enquiry'}
-              </button>
-              <button type="button" onClick={sendViaWhatsApp} className="btn flex-1 bg-[#25D366] text-white hover:-translate-y-0.5 hover:bg-[#1ebe5a]">
-                <FaWhatsapp className="text-lg" /> WhatsApp us
-              </button>
-            </div>
+            <button type="submit" disabled={status === 'sending'} className="btn-primary mt-6 w-full disabled:cursor-wait disabled:opacity-70">
+              {status === 'sending' ? <FaSpinner className="animate-spin" /> : <FaPaperPlane />}
+              {status === 'sending' ? 'Sending…' : 'Send Enquiry'}
+            </button>
           </motion.form>
         )}
       </AnimatePresence>
