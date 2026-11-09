@@ -1,9 +1,29 @@
-# Apache / Hostinger: send all routes to the React app
+# Apache / Hostinger / cPanel
+# Every page is pre-rendered to an .html file, so /about serves about.html and
+# unknown URLs get the custom 404 page with a real 404 status.
+Options -MultiViews
+DirectorySlash Off
+ErrorDocument 404 /404.html
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^index\.html$ - [L]
+
+  # Redirect /about/ and /about.html to the clean URL /about
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+  RewriteCond %{THE_REQUEST} \s/([^?\s]+)\.html[\s?]
+  RewriteCond %1 !^index$
+  RewriteRule ^ /%1 [R=301,L]
+
+  # Serve /about from about.html
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
 </IfModule>

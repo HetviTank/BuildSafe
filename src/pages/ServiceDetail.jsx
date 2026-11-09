@@ -8,7 +8,6 @@ import Reveal from '../components/ui/Reveal'
 import SectionHeading from '../components/ui/SectionHeading'
 import { SocialIcons } from '../components/ui/SocialLinks'
 import { ServiceArt } from '../components/illustrations'
-import usePageTitle from '../hooks/usePageTitle'
 import { contact, process, telHref } from '../data/company'
 import { getService, services } from '../data/services'
 import { gallery } from '../data/gallery'
@@ -76,7 +75,6 @@ function Sidebar({ current }) {
 export default function ServiceDetail() {
   const { slug } = useParams()
   const service = getService(slug)
-  usePageTitle(service?.title)
 
   if (!service) return <Navigate to="/services" replace />
 

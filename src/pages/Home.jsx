@@ -11,12 +11,9 @@ import Reveal from '../components/ui/Reveal'
 import SectionHeading from '../components/ui/SectionHeading'
 import FireArt from '../components/illustrations/FireArt'
 import extinguisherAudit from '../assets/images/gallery/extinguisher-audit.webp'
-import usePageTitle from '../hooks/usePageTitle'
 import { about } from '../data/company'
 
 export default function Home() {
-  usePageTitle()
-
   return (
     <>
       <Hero />

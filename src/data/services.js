@@ -1,5 +1,6 @@
 // One entry per service page (/services/:slug).
 // `art` picks the matching illustration from components/illustrations.
+// `seo` is the Google search title (~60 chars) and description (~155 chars) for the page.
 
 import {
   FaFireExtinguisher,
@@ -13,6 +14,11 @@ import {
 export const services = [
   {
     slug: 'fire-safety',
+    seo: {
+      title: 'Fire NOC & Fire Safety Services in Anjar, Kutch | BuildSafe',
+      description:
+        'Fire NOC application support, fire safety audits, fire alarm review, extinguisher hydrotesting & refilling, hydrant and sprinkler inspection across Kutch, Gujarat.',
+    },
     art: 'fire',
     icon: FaFireExtinguisher,
     title: 'Fire & Safety Services',
@@ -74,6 +80,11 @@ export const services = [
   },
   {
     slug: 'health-safety-training',
+    seo: {
+      title: 'Health & Safety Training, Fire Drills & Emergency Plans | Kutch',
+      description:
+        'Onsite emergency plans, evacuation planning, fire drills and safety awareness training for factories, warehouses and sites in Anjar and across Kutch, Gujarat.',
+    },
     art: 'training',
     icon: FaChalkboardTeacher,
     title: 'Health & Safety Training',
@@ -111,6 +122,11 @@ export const services = [
   },
   {
     slug: 'iso-consulting',
+    seo: {
+      title: 'ISO Consultant in Kutch, Gujarat – ISO Certification Support',
+      description:
+        'ISO gap assessment, documentation, implementation and certification-readiness support from an ISO 9001:2015 certified consultancy based in Anjar, Kutch.',
+    },
     art: 'iso',
     icon: FaCertificate,
     title: 'ISO Consulting',
@@ -148,6 +164,11 @@ export const services = [
   },
   {
     slug: 'third-party-inspection',
+    seo: {
+      title: 'Third Party Inspection – Lifting Equipment & Fire Systems | Kutch',
+      description:
+        'Independent third-party inspection of cranes, hooks, lifting tackles, tools, fire pumps, sprinklers, hydrants and fire alarm systems in Kutch, Gujarat.',
+    },
     art: 'inspection',
     icon: FaSearchPlus,
     title: 'Third Party Inspection',
@@ -185,6 +206,11 @@ export const services = [
   },
   {
     slug: 'audits',
+    seo: {
+      title: 'Safety Audit, Fire Audit & Environment Audit in Kutch, Gujarat',
+      description:
+        'Statutory and customised safety audits, fire safety compliance audits and environment audits with clear, prioritised reports. Based in Anjar, serving Kutch.',
+    },
     art: 'audit',
     icon: FaClipboardCheck,
     title: 'Audit Services',
@@ -222,6 +248,11 @@ export const services = [
   },
   {
     slug: 'civil-engineering',
+    seo: {
+      title: 'Civil Engineering Consultancy, Pre-DCR & Testing | Anjar, Kutch',
+      description:
+        'Engineering consultancy, space planning, Pre-DCR and regulatory support, material testing, estimation and quality control for projects across Kutch, Gujarat.',
+    },
     art: 'civil',
     icon: FaDraftingCompass,
     title: 'Civil Engineering Services',

@@ -75,7 +75,7 @@ export default function Footer() {
 
       <div className="border-t border-white/5">
         <div className="container-x flex flex-col items-center justify-between gap-2 py-6 text-xs sm:flex-row">
-          <p>© {year} {company.name}. All rights reserved.</p>
+          <p suppressHydrationWarning>© {year} {company.name}. All rights reserved.</p>
           <p>Fire · Safety · Civil Consultancy — Anjar, Gujarat</p>
         </div>
       </div>

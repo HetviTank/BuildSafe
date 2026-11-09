@@ -1,6 +1,6 @@
 # BuildSafe Enterprise — Website
 
-A modern, animated single-page website for **BuildSafe Enterprise** (Fire, Safety & Civil Consultancy, Anjar).
+A modern, animated, SEO-optimised website for **BuildSafe Enterprise** (Fire, Safety & Civil Consultancy, Anjar).
 Built with **React 19 + Vite**, **Tailwind CSS v4** and **Framer Motion**.
 
 ## Getting started
@@ -8,7 +8,7 @@ Built with **React 19 + Vite**, **Tailwind CSS v4** and **Framer Motion**.
 ```bash
 npm install
 npm run dev       # local dev server → http://localhost:5173
-npm run build     # production build → dist/
+npm run build     # production build → dist/ (every page pre-rendered to HTML)
 npm run preview   # preview the production build
 npm run lint
 ```
@@ -27,8 +27,14 @@ npm run lint
 ## Folder structure
 
 ```
+raw-images/               # Original full-size photos/logos (NOT used by the site)
+├── gallery/              # Same names as the WebP versions in src/assets/images/gallery/
+└── clients/              # Same names as the WebP versions in src/assets/images/clients/
+public/                   # Copied as-is to dist/: favicon, app icons, og-image.jpg (share preview),
+                          # site.webmanifest, hosting config (.htaccess, _headers)
+scripts/prerender.js      # Build step: renders every route to static HTML + sitemap.xml + robots.txt
 src/
-├── assets/images/        # Optimised WebP photos (brand/, gallery/)
+├── assets/images/        # Optimised WebP photos used by the site (brand/, clients/, gallery/)
 ├── components/
 │   ├── illustrations/    # Custom animated SVG artwork, one per service
 │   ├── layout/           # Layout (page transitions), Navbar, Footer, PageBanner, ...
@@ -39,21 +45,28 @@ src/
 │   ├── services.js       # The 6 service pages
 │   ├── clients.js        # Client list
 │   └── gallery.js        # Gallery photos & artwork
-├── hooks/                # usePageTitle, useScrolled
+├── hooks/                # useSeo, useScrolled
 ├── pages/                # One file per route
+├── seo/
+│   ├── config.js         # SITE_URL (live domain), business address, share image
+│   ├── meta.js           # Page titles/descriptions + Google structured data (JSON-LD)
+│   └── head.js           # Writes the <head> tags (build time and in the browser)
 ├── styles/index.css      # Tailwind theme (brand colours, fonts, animations)
 ├── App.jsx               # Routes
-└── main.jsx              # Entry point
+├── main.jsx              # Browser entry (hydrates the pre-rendered HTML)
+└── entry-server.jsx      # Build-time entry used by scripts/prerender.js
 ```
 
 ## Editing content
 
 All text lives in **`src/data/`** — no component changes needed.
 
-- **Add a gallery photo:** put it in `src/assets/images/gallery/`, import it in `gallery.js`, add an entry.
+- **Add a gallery photo:** keep the original in `raw-images/gallery/`, save a WebP copy (~1280px wide)
+  in `src/assets/images/gallery/`, import it in `gallery.js`, add an entry.
 - **Add a client logo:** put it in `src/assets/images/clients/`, import it in `clients.js` and set `logo`.
   Clients without a logo show a branded monogram.
-- **Edit a service page:** change its entry in `services.js`.
+- **Edit a service page:** change its entry in `services.js` (its `seo` block is the Google title/description).
+- **Add a new service:** add an entry to `services.js` — its page, sitemap entry and structured data are generated automatically.
 
 ## Contact form
 
@@ -62,12 +75,33 @@ email app (to both company addresses) or WhatsApp with the message pre-filled.
 To receive submissions directly instead, connect a service such as Formspree, EmailJS or Web3Forms
 inside `send()` in `src/components/sections/Contact.jsx`.
 
+## SEO
+
+- **Before going live, set `SITE_URL` in `src/seo/config.js`** to the real domain. The build warns while it
+  is still the placeholder.
+- Every page is pre-rendered at build time, so Google and social apps (WhatsApp, LinkedIn, ...) see the
+  full content plus that page's own title, description, canonical URL, share image and structured data.
+- Page titles/descriptions: static pages in `src/seo/meta.js`, service pages in `src/data/services.js`.
+- Structured data: a `ProfessionalService` (local business) with address, phones and social profiles on
+  every page, a `Service` on each service page, and breadcrumbs.
+- `dist/sitemap.xml` and `dist/robots.txt` are generated from the routes on every build.
+- **Adding a new page/route:** add it to `App.jsx` *and* to `pages` in `src/seo/meta.js`, otherwise it
+  is not pre-rendered and will return 404 on the live site.
+
+After the first deploy:
+
+1. Add the site to [Google Search Console](https://search.google.com/search-console), verify it and
+   submit `https://<your-domain>/sitemap.xml`.
+2. Create/claim the **Google Business Profile** for BuildSafe Enterprise with the same name, address
+   and phone as the website — this drives "near me" and Google Maps results.
+3. Check the structured data with the [Rich Results Test](https://search.google.com/test/rich-results).
+
 ## Deployment
 
-`npm run build` outputs a static `dist/` folder. Because the site has multiple pages, the host must
-send every URL to `index.html`. This is already configured for:
+`npm run build` outputs a static `dist/` folder with one HTML file per page (`about.html`,
+`services/fire-safety.html`, ...) and a `404.html`. Clean URLs (`/about`), real 404s and long-term
+caching of `/assets/` are already configured for:
 
-- **Netlify** — `public/_redirects`
 - **Vercel** — `vercel.json`
+- **Netlify** — works out of the box (`public/_headers` for caching)
 - **Apache / Hostinger / cPanel** — `public/.htaccess`
-# BuildSafe

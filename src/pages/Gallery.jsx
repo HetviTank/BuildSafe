@@ -1,11 +1,8 @@
 import PageBanner from '../components/layout/PageBanner'
 import GalleryGrid from '../components/sections/GalleryGrid'
 import CtaBanner from '../components/sections/CtaBanner'
-import usePageTitle from '../hooks/usePageTitle'
 
 export default function Gallery() {
-  usePageTitle('Gallery')
-
   return (
     <>
       <PageBanner

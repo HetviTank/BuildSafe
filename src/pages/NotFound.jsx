@@ -2,11 +2,8 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FaHome } from 'react-icons/fa'
 import Embers from '../components/ui/Embers'
-import usePageTitle from '../hooks/usePageTitle'
 
 export default function NotFound() {
-  usePageTitle('Page Not Found')
-
   return (
     <section className="relative isolate flex min-h-svh items-center justify-center overflow-hidden bg-ink-900 px-4 text-center">
       <Embers className="-z-10" />

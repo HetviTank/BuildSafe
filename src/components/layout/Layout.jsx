@@ -5,17 +5,20 @@ import Navbar from './Navbar'
 import Footer from './Footer'
 import ScrollProgress from './ScrollProgress'
 import FloatingActions from './FloatingActions'
+import useSeo from '../../hooks/useSeo'
 
 /** App shell: shared chrome plus animated transitions between pages. */
 export default function Layout() {
   const { pathname } = useLocation()
   const outlet = useOutlet()
+  useSeo(pathname)
 
   return (
     <>
       <ScrollProgress />
       <Navbar />
-      <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
+      {/* initial={false}: the first page shows instantly (it is pre-rendered HTML); later navigations animate. */}
+      <AnimatePresence mode="wait" initial={false} onExitComplete={() => window.scrollTo(0, 0)}>
         <motion.main
           key={pathname}
           initial={{ opacity: 0, y: 16 }}

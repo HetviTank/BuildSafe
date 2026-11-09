@@ -8,13 +8,10 @@ import SectionHeading from '../components/ui/SectionHeading'
 import ClientCard from '../components/ui/ClientCard'
 import CivilArt from '../components/illustrations/CivilArt'
 import isoBadge from '../assets/images/brand/iso-badge.webp'
-import usePageTitle from '../hooks/usePageTitle'
 import { about, company, expertise } from '../data/company'
 import { clients } from '../data/clients'
 
 export default function About() {
-  usePageTitle('About Us')
-
   return (
     <>
       <PageBanner

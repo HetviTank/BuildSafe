@@ -2,11 +2,8 @@ import PageBanner from '../components/layout/PageBanner'
 import ServicesGrid from '../components/sections/ServicesGrid'
 import Process from '../components/sections/Process'
 import CtaBanner from '../components/sections/CtaBanner'
-import usePageTitle from '../hooks/usePageTitle'
 
 export default function Services() {
-  usePageTitle('Our Services')
-
   return (
     <>
       <PageBanner

@@ -6,12 +6,10 @@ import { ContactCards, MapEmbed } from '../components/sections/ContactCards'
 import Reveal from '../components/ui/Reveal'
 import { SocialCards } from '../components/ui/SocialLinks'
 import SectionHeading from '../components/ui/SectionHeading'
-import usePageTitle from '../hooks/usePageTitle'
 import { contact, telHref } from '../data/company'
 import { getService } from '../data/services'
 
 export default function Contact() {
-  usePageTitle('Contact Us')
   const [params] = useSearchParams()
   const preselected = getService(params.get('service') ?? '')?.title ?? ''
 
