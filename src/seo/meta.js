@@ -4,14 +4,14 @@
 
 import { company, contact, socials } from '../data/company'
 import { services, getService } from '../data/services'
-import { AREA_SERVED, OG_IMAGE, POSTAL_ADDRESS, SITE_NAME, SITE_URL, absoluteUrl } from './config'
+import { ALTERNATE_NAMES, AREA_SERVED, OG_IMAGE, POSTAL_ADDRESS, SITE_NAME, SITE_URL, absoluteUrl } from './config'
 
 /** Static pages. Service pages are added automatically from data/services.js. */
 const pages = {
   '/': {
-    title: 'Fire Safety Consultant in Anjar, Kutch | BuildSafe Enterprise',
+    title: 'BuildSafe Enterprise | Fire Safety Consultant in Anjar, Kutch',
     description:
-      'ISO 9001:2015 certified fire, safety & civil engineering consultancy in Anjar, Kutch (Gujarat). Fire NOC support, safety audits, third-party inspection & training.',
+      'BuildSafe Enterprise (Build Safe), Anjar, Kutch – ISO 9001:2015 certified fire, safety & civil consultancy. Fire NOC, safety audits, inspection & training.',
   },
   '/about': {
     title: 'About Us | BuildSafe Enterprise – Fire & Safety Consultancy, Kutch',
@@ -54,7 +54,7 @@ function businessSchema() {
     '@type': 'ProfessionalService',
     '@id': businessId,
     name: company.name,
-    alternateName: company.shortName,
+    alternateName: ALTERNATE_NAMES,
     slogan: company.tagline,
     description: company.summary,
     url: absoluteUrl('/'),
@@ -90,6 +90,7 @@ function websiteSchema() {
     '@id': `${SITE_URL}/#website`,
     url: absoluteUrl('/'),
     name: SITE_NAME,
+    alternateName: ALTERNATE_NAMES,
     inLanguage: 'en-IN',
     publisher: { '@id': businessId },
   }

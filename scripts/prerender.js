@@ -15,12 +15,16 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const dist = path.join(root, 'dist')
 const ssrDir = path.join(root, 'dist-ssr')
 
-const { render, routes, getPageMeta, renderHead, SITE_URL } = await import(
+const { render, routes, getPageMeta, renderHead, SITE_URL, GOOGLE_SITE_VERIFICATION } = await import(
   pathToFileURL(path.join(ssrDir, 'entry-server.js')).href
 )
 
 if (SITE_URL.includes('example.com')) {
   console.warn('\n\x1b[33m⚠  SITE_URL is still the placeholder (src/seo/config.js). Set it to the live domain before deploying.\x1b[0m\n')
+}
+
+if (!GOOGLE_SITE_VERIFICATION) {
+  console.log('ℹ  Google Search Console not verified yet — add GOOGLE_SITE_VERIFICATION in src/seo/config.js (see README → SEO).')
 }
 
 const template = await fs.readFile(path.join(dist, 'index.html'), 'utf8')

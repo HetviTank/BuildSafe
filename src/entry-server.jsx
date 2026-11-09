@@ -7,7 +7,7 @@ import App from './App.jsx'
 
 export { routes, getPageMeta } from './seo/meta'
 export { renderHead } from './seo/head'
-export { SITE_URL } from './seo/config'
+export { SITE_URL, GOOGLE_SITE_VERIFICATION } from './seo/config'
 
 /** Renders one URL to HTML, waiting for lazy-loaded pages so the full content is included. */
 export async function render(url) {

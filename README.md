@@ -138,13 +138,28 @@ questions the visitor asked). The chat window is code-split and loads only when 
 - **Adding a new page/route:** add it to `App.jsx` *and* to `pages` in `src/seo/meta.js`, otherwise it
   is not pre-rendered and will return 404 on the live site.
 
-After the first deploy:
+After the first deploy — **these steps decide whether the site appears on Google**:
 
-1. Add the site to [Google Search Console](https://search.google.com/search-console), verify it and
-   submit `https://<your-domain>/sitemap.xml`.
-2. Create/claim the **Google Business Profile** for BuildSafe Enterprise with the same name, address
-   and phone as the website — this drives "near me" and Google Maps results.
-3. Check the structured data with the [Rich Results Test](https://search.google.com/test/rich-results).
+1. **Google Search Console** — [search.google.com/search-console](https://search.google.com/search-console) → *Add property* →
+   **URL prefix** → `https://build-safe-zeta.vercel.app/` → choose **HTML tag** → copy only the `content="…"` value into
+   `GOOGLE_SITE_VERIFICATION` in `src/seo/config.js` → push → click **Verify**.
+   Then: *Sitemaps* → submit `sitemap.xml`; *URL inspection* → enter the home URL → **Request indexing**
+   (repeat for /services, /contact and each service page).
+2. **Google Business Profile** — [business.google.com](https://business.google.com) → create "BuildSafe Enterprise"
+   with exactly the same name, address and phone as the website, category *Fire protection consultant* /
+   *Safety consultant*, add the website link and photos. This is what shows the business on Google Maps and for
+   "buildsafe anjar" / "fire safety consultant near me".
+3. **Link the website everywhere** — put `https://build-safe-zeta.vercel.app` in the bio/website field of the Facebook,
+   Instagram, LinkedIn, X and YouTube profiles, and list the business (same name/address/phone) on JustDial,
+   IndiaMART and Sulekha. Each link helps Google discover and trust the site.
+4. **Own domain (recommended)** — e.g. `buildsafeenterprise.in`. Buy it, add it in Vercel → Project → Settings →
+   Domains, then set `SITE_URL` in `src/seo/config.js` to it and redeploy. A real domain ranks and looks far better
+   than `*.vercel.app` (Search Console can then be verified by DNS instead of the HTML tag).
+5. Check the structured data with the [Rich Results Test](https://search.google.com/test/rich-results).
+
+Expect the site to appear for **"BuildSafe Enterprise"** and **"BuildSafe Anjar / Kutch"** within days to a few weeks of
+indexing. The bare term "build safe" is shared with established companies (e.g. buildsafe.in, Buildsafe Australia), so
+ranking first for it takes time, links and reviews — the brand + location searches are what customers in Kutch use.
 
 ## Deployment
 

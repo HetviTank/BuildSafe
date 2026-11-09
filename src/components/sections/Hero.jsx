@@ -39,7 +39,7 @@ export default function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-500" />
             </span>
-            Fire · Safety · Civil Consultancy
+            {company.name} · Anjar, Kutch
           </motion.span>
 
           <h1 className="mt-6 text-5xl font-extrabold leading-[1.05] text-white sm:text-6xl lg:text-7xl">
@@ -55,7 +55,7 @@ export default function Hero() {
           </h1>
 
           <motion.p variants={item} className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">
-            {company.summary}
+            <strong className="font-semibold text-white">{company.name}</strong> is {company.summary.charAt(0).toLowerCase() + company.summary.slice(1)}
           </motion.p>
 
           <motion.ul variants={item} className="mt-7 flex flex-wrap gap-x-6 gap-y-3">

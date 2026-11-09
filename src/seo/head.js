@@ -2,7 +2,7 @@
 // updates in the browser when the visitor navigates. Each tag carries a `data-seo` key so
 // the browser updates the pre-rendered tags in place instead of adding duplicates.
 
-import { LOCALE, OG_IMAGE, SITE_NAME, absoluteUrl } from './config'
+import { GOOGLE_SITE_VERIFICATION, LOCALE, OG_IMAGE, SITE_NAME, absoluteUrl } from './config'
 
 /** @returns {{ key: string, tag: 'meta' | 'link' | 'script', attrs?: object, text?: string }[]} */
 export function headTags(meta) {
@@ -25,6 +25,9 @@ export function headTags(meta) {
     { key: 'twitter:description', tag: 'meta', attrs: { name: 'twitter:description', content: meta.description } },
     { key: 'twitter:image', tag: 'meta', attrs: { name: 'twitter:image', content: image } },
   ]
+  if (GOOGLE_SITE_VERIFICATION) {
+    tags.push({ key: 'google-site-verification', tag: 'meta', attrs: { name: 'google-site-verification', content: GOOGLE_SITE_VERIFICATION } })
+  }
   if (!meta.noindex) {
     tags.push(
       { key: 'canonical', tag: 'link', attrs: { rel: 'canonical', href: url } },
