@@ -13,7 +13,7 @@ export const ALTERNATE_NAMES = ['BuildSafe', 'Build Safe', 'Build Safe Enterpris
 
 // Google Search Console → Add property (URL prefix) → "HTML tag" method → paste ONLY the content value here,
 // e.g. 'AbC123xyz...'. Deploy, then click Verify in Search Console. Leave '' until you have it.
-export const GOOGLE_SITE_VERIFICATION = ''
+export const GOOGLE_SITE_VERIFICATION = 'BhT-8jgLoqsH_wHdVXWUcqhYdxYQJJlcsCEHYMCpl80'
 
 // 1200×630 image shown when a page is shared on WhatsApp, LinkedIn, Facebook, X, ...
 export const OG_IMAGE = '/og-image.jpg'
