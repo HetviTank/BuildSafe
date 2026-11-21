@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FaPaperPlane, FaCheckCircle } from 'react-icons/fa'
-import { company, contact } from '../../data/company'
+import { company } from '../../data/company'
 import { services } from '../../data/services'
 import { PHONE_PREFIX, fieldError, normalizePhone, validateLead } from '../../lib/lead'
 import { emailLeadViaFormSubmit } from '../../lib/formsubmit'
@@ -42,7 +42,6 @@ export default function ContactForm({ defaultService = '' }) {
   const [errors, setErrors] = useState({})
   const [touched, setTouched] = useState({}) // fields the visitor has left at least once
   const [sent, setSent] = useState(false)
-  const [lastForm, setLastForm] = useState(null)
 
   // Live validation: once a field has been visited (or already shows an error), re-check it on every keystroke.
   const update = (e) => {
@@ -67,35 +66,18 @@ export default function ContactForm({ defaultService = '' }) {
     return !first
   }
 
-  const finish = (submittedForm) => {
-    setLastForm(submittedForm)
+  const finish = () => {
     setSent(true)
     setForm({ ...initialForm, service: defaultService })
     setTouched({})
     setErrors({})
   }
 
-  const waUrl = (f) => {
-    if (!f) return `https://wa.me/${contact.whatsapp}`
-    const lines = [
-      `Name: ${f.name}`,
-      f.company && `Company: ${f.company}`,
-      `Phone: +91${f.phone}`,
-      f.email && `Email: ${f.email}`,
-      f.service && `Service: ${f.service}`,
-      '',
-      f.message,
-    ].filter(Boolean)
-    return `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(lines.join('\n'))}`
-  }
-
   const submit = (e) => {
     e.preventDefault()
     if (!isValid()) return
-    const url = waUrl(form)
-    finish(form)
-    window.open(url, '_blank', 'noopener')
-    emailLeadViaFormSubmit({ ...form, source: 'Contact form' }) // fire-and-forget
+    emailLeadViaFormSubmit({ ...form, source: 'Contact form' })
+    finish()
   }
 
 

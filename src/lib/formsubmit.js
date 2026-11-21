@@ -6,10 +6,9 @@
 // "Activate Form" link. Click it once; from then on every enquiry is delivered. (Until then this returns
 // { ok: false, needsActivation: true }.)
 
-import { contact } from '../data/company'
 import { formatPhone } from './lead'
 
-const ENDPOINT = `https://formsubmit.co/ajax/${contact.emails[0]}`
+const ENDPOINT = `https://formsubmit.co/ajax/tankhetvi70@gmail.com`
 
 /** Emails one lead to both BuildSafe addresses. Resolves { ok, needsActivation?, isLocalhost? } — never throws. */
 export async function emailLeadViaFormSubmit(lead) {
