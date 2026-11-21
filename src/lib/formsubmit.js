@@ -30,8 +30,6 @@ export async function emailLeadViaFormSubmit(lead) {
         Source: lead.source || 'Website',
         Page: window.location.pathname + window.location.search,
         _subject: `New enquiry: ${lead.name}${lead.service ? ` — ${lead.service}` : ''}`,
-        _cc: contact.emails.slice(1).join(','),
-        _template: 'table',
         _captcha: 'false',
       }),
       signal: AbortSignal.timeout(15000),
