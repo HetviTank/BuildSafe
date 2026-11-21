@@ -54,7 +54,7 @@ export default function Home() {
               ].map(({ icon: Icon, title, text }, i) => (
                 <Reveal key={title} delay={0.15 + i * 0.1}>
                   <div className="group h-full rounded-2xl border border-slate-100 bg-slate-50 p-6 transition hover:-translate-y-1 hover:border-brand-200 hover:bg-white hover:shadow-xl">
-                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-ink-900 text-white transition group-hover:bg-brand-500">
+                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-500 text-white transition group-hover:bg-brand-600">
                       <Icon />
                     </span>
                     <h3 className="mt-4 text-lg font-bold">{title}</h3>

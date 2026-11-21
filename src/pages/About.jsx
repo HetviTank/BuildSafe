@@ -20,7 +20,7 @@ export default function About() {
         description={company.summary}
         crumbs={[{ label: 'About Us' }]}
       >
-        <div className="overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
+        <div className="overflow-hidden rounded-3xl border border-slate-200 shadow-sm">
           <CivilArt className="aspect-[4/3] w-full" />
         </div>
       </PageBanner>
@@ -64,13 +64,13 @@ export default function About() {
             { icon: FaEye, title: 'Our Vision', text: about.vision },
           ].map(({ icon: Icon, title, text }, i) => (
             <Reveal key={title} delay={i * 0.15}>
-              <div className="group relative h-full overflow-hidden rounded-3xl bg-ink-900 p-10 text-white">
-                <Icon className="absolute -bottom-6 -right-6 text-[9rem] text-white/5 transition duration-700 group-hover:rotate-12 group-hover:scale-110" />
+              <div className="group relative h-full overflow-hidden rounded-3xl bg-white p-10 border border-slate-200 shadow-sm text-ink-900">
+                <Icon className="absolute -bottom-6 -right-6 text-[9rem] text-brand-500/10 transition duration-700 group-hover:rotate-12 group-hover:scale-110" />
                 <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-500 text-2xl shadow-lg shadow-brand-500/30">
                   <Icon />
                 </span>
-                <h3 className="mt-6 text-2xl font-bold text-white">{title}</h3>
-                <p className="mt-3 leading-relaxed text-slate-300">{text}</p>
+                <h3 className="mt-6 text-2xl font-bold text-ink-900">{title}</h3>
+                <p className="mt-3 leading-relaxed text-slate-600">{text}</p>
               </div>
             </Reveal>
           ))}

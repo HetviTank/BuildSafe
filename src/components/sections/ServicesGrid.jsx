@@ -19,7 +19,7 @@ export default function ServicesGrid({ exclude }) {
         >
           <Link
             to={`/services/${s.slug}`}
-            className="group flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100 transition duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-ink-900/15"
+            className="group flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100 transition duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-slate-900/5"
           >
             <div className="relative aspect-[4/3] overflow-hidden">
               <ServiceArt name={s.art} className="h-full w-full transition duration-700 group-hover:scale-105" />

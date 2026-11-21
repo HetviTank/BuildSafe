@@ -44,22 +44,22 @@ function Sidebar({ current }) {
         </ul>
       </div>
 
-      <div className="relative overflow-hidden rounded-3xl bg-ink-900 p-7 text-white">
+      <div className="relative overflow-hidden rounded-3xl bg-white p-7 border border-slate-200 shadow-sm text-ink-900">
         <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-brand-500/30 blur-2xl" />
-        <h3 className="relative text-xl font-bold text-white">Need help with this?</h3>
-        <p className="relative mt-2 text-sm text-slate-300">Talk to our team — 24/7 emergency response.</p>
+        <h3 className="relative text-xl font-bold text-ink-900">Need help with this?</h3>
+        <p className="relative mt-2 text-sm text-slate-500">Talk to our team — 24/7 emergency response.</p>
         <div className="relative mt-5 space-y-3">
-          <a href={telHref(contact.phones[0])} className="flex items-center gap-3 rounded-xl bg-white/5 px-4 py-3 text-sm font-semibold transition hover:bg-brand-500">
+          <a href={telHref(contact.phones[0])} className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-3 text-sm font-semibold transition hover:bg-brand-500">
             <FaPhoneAlt className="text-brand-400" /> {contact.phones[0]}
           </a>
-          <a href={`https://wa.me/${contact.whatsapp}`} target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-xl bg-white/5 px-4 py-3 text-sm font-semibold transition hover:bg-[#25D366]">
+          <a href={`https://wa.me/${contact.whatsapp}`} target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-3 text-sm font-semibold transition hover:bg-[#25D366]">
             <FaWhatsapp className="text-lg text-[#25D366]" /> Chat on WhatsApp
           </a>
-          <a href={`mailto:${contact.emails[0]}`} className="flex items-center gap-3 rounded-xl bg-white/5 px-4 py-3 text-sm font-semibold transition hover:bg-brand-500">
+          <a href={`mailto:${contact.emails[0]}`} className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-3 text-sm font-semibold transition hover:bg-brand-500">
             <FaEnvelope className="text-brand-400" /> Email us
           </a>
         </div>
-        <SocialIcons size="sm" className="relative mt-6 justify-center" />
+        <SocialIcons size="sm" tone="light" className="relative mt-6 justify-center" />
       </div>
 
       <div className="flex items-center gap-4 rounded-3xl bg-brand-50 p-6 ring-1 ring-brand-100">
@@ -93,7 +93,7 @@ export default function ServiceDetail() {
       >
         <div className="relative">
           <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-brand-500/40 to-transparent blur-xl" />
-          <div className="relative overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
+          <div className="relative overflow-hidden rounded-3xl border border-slate-200 shadow-sm">
             <ServiceArt name={service.art} className="aspect-[4/3] w-full" />
           </div>
         </div>
@@ -122,8 +122,8 @@ export default function ServiceDetail() {
                 >
                   <span className="absolute inset-y-0 left-0 w-1 origin-top scale-y-0 bg-brand-500 transition duration-500 group-hover:scale-y-100" />
                   <div className="flex flex-col gap-5 sm:flex-row">
-                    <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-ink-900 font-display text-lg font-bold text-white transition duration-500 group-hover:bg-brand-500">
-                      {String(i + 1).padStart(2, '0')}
+              <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-brand-500 text-xl text-white transition duration-500 group-hover:bg-brand-600">
+                {String(i + 1).padStart(2, '0')}
                     </span>
                     <div>
                       <h3 className="text-lg font-bold sm:text-xl">{item.title}</h3>
@@ -149,14 +149,14 @@ export default function ServiceDetail() {
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
                   {photos.slice(0, 4).map((photo, i) => (
                     <Reveal key={photo.title} delay={i * 0.08}>
-                      <figure className="group relative aspect-[4/3] overflow-hidden rounded-3xl bg-ink-900">
+                      <figure className="group relative aspect-[4/3] overflow-hidden rounded-3xl bg-white border border-slate-200">
                         <img
                           src={photo.src}
                           alt={photo.title}
                           loading="lazy"
                           className={`h-full w-full object-cover transition duration-700 group-hover:scale-110 ${photo.position ?? ''}`}
                         />
-                        <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink-950/90 to-transparent p-5 pt-12 text-sm font-semibold text-white">
+                        <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-900/50 to-transparent p-5 pt-12 text-sm font-semibold text-white">
                           {photo.title}
                         </figcaption>
                       </figure>
@@ -167,11 +167,11 @@ export default function ServiceDetail() {
             )}
 
             {/* Why BuildSafe */}
-            <Reveal className="mt-14 rounded-3xl bg-ink-900 p-8 sm:p-10">
-              <h2 className="text-2xl font-bold text-white">Why choose BuildSafe?</h2>
+            <Reveal className="mt-14 rounded-3xl bg-white p-8 sm:p-10 border border-slate-200 shadow-sm">
+              <h2 className="text-2xl font-bold text-ink-900">Why choose BuildSafe?</h2>
               <ul className="mt-6 grid gap-4 sm:grid-cols-2">
                 {benefits.map((b) => (
-                  <li key={b} className="flex gap-3 text-slate-300">
+                  <li key={b} className="flex gap-3 text-slate-600">
                     <FaCheck className="mt-1 shrink-0 text-brand-400" /> {b}
                   </li>
                 ))}

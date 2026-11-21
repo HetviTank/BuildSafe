@@ -17,7 +17,7 @@ export default function FloatingActions() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.6 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="grid h-11 w-11 place-items-center rounded-full bg-ink-900 text-white shadow-lg transition hover:bg-brand-500"
+            className="grid h-11 w-11 place-items-center rounded-full bg-white text-ink-900 border border-slate-200 shadow-md transition hover:bg-brand-500 hover:text-white"
             aria-label="Back to top"
           >
             <FaArrowUp />

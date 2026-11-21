@@ -9,27 +9,27 @@ const year = new Date().getFullYear()
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-ink-950 text-slate-400">
+    <footer className="relative overflow-hidden bg-slate-50 text-slate-500">
       <div className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[60rem] -translate-x-1/2 rounded-full bg-brand-500/10 blur-3xl" />
       <div className="container-x relative grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <Link to="/" className="flex items-center gap-3">
             <Logo className="h-14 w-14" />
             <div>
-              <p className="font-display text-xl font-bold text-white">{company.name}</p>
+              <p className="font-display text-xl font-bold text-ink-900">{company.name}</p>
               <p className="text-sm text-brand-400">{company.tagline}</p>
             </div>
           </Link>
           <p className="mt-5 text-sm leading-relaxed">{company.summary}</p>
-          <span className="mt-5 inline-flex rounded-full border border-navy-600/60 bg-navy-700/30 px-4 py-1.5 text-xs font-semibold text-blue-200">
+          <span className="mt-5 inline-flex rounded-full border border-brand-100 bg-brand-50 px-4 py-1.5 text-xs font-semibold text-brand-700">
             {company.certification}
           </span>
-          <p className="mt-7 text-sm font-bold uppercase tracking-widest text-white">Follow Us</p>
-          <SocialIcons className="mt-4" />
+          <p className="mt-7 text-sm font-bold uppercase tracking-widest text-ink-900">Follow Us</p>
+          <SocialIcons className="mt-4" tone="light" />
         </div>
 
         <div className="lg:col-span-2">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-white">Quick Links</h3>
+          <h3 className="text-sm font-bold uppercase tracking-widest text-ink-900">Quick Links</h3>
           <ul className="mt-5 space-y-3 text-sm">
             {navLinks.map((l) => (
               <li key={l.to}>
@@ -40,7 +40,7 @@ export default function Footer() {
         </div>
 
         <div className="lg:col-span-3">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-white">Services</h3>
+          <h3 className="text-sm font-bold uppercase tracking-widest text-ink-900">Services</h3>
           <ul className="mt-5 space-y-3 text-sm">
             {services.map((s) => (
               <li key={s.slug}>
@@ -51,7 +51,7 @@ export default function Footer() {
         </div>
 
         <div className="lg:col-span-3">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-white">Get in Touch</h3>
+          <h3 className="text-sm font-bold uppercase tracking-widest text-ink-900">Get in Touch</h3>
           <ul className="mt-5 space-y-4 text-sm">
             <li className="flex gap-3">
               <FaMapMarkerAlt className="mt-1 shrink-0 text-brand-500" />
@@ -60,20 +60,20 @@ export default function Footer() {
             {contact.phones.map((p) => (
               <li key={p} className="flex items-center gap-3">
                 <FaPhoneAlt className="shrink-0 text-brand-500" />
-                <a href={telHref(p)} className="hover:text-white">{p}</a>
+                <a href={telHref(p)} className="hover:text-brand-600">{p}</a>
               </li>
             ))}
             {contact.emails.map((e) => (
               <li key={e} className="flex items-center gap-3">
                 <FaEnvelope className="shrink-0 text-brand-500" />
-                <a href={`mailto:${e}`} className="break-all hover:text-white">{e}</a>
+                <a href={`mailto:${e}`} className="break-all hover:text-brand-600">{e}</a>
               </li>
             ))}
           </ul>
         </div>
       </div>
 
-      <div className="border-t border-white/5">
+      <div className="border-t border-slate-200">
         <div className="container-x flex flex-col items-center justify-between gap-2 py-6 text-xs sm:flex-row">
           <p suppressHydrationWarning>© {year} {company.name}. All rights reserved.</p>
           <p>Fire · Safety · Civil Consultancy — Anjar, Gujarat</p>

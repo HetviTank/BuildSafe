@@ -33,7 +33,7 @@ function Lightbox({ items, index, onClose, onStep }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
-      className="fixed inset-0 z-[70] flex flex-col items-center justify-center bg-ink-950/95 p-4 backdrop-blur"
+      className="fixed inset-0 z-[70] flex flex-col items-center justify-center bg-white/95 p-4 backdrop-blur-md"
     >
       <AnimatePresence mode="wait">
         <motion.div
@@ -48,18 +48,18 @@ function Lightbox({ items, index, onClose, onStep }) {
           <img src={item.src} alt={item.title} className="max-h-[78vh] w-full object-contain" />
         </motion.div>
       </AnimatePresence>
-      <p className="mt-4 text-center text-sm text-slate-300">
-        <span className="font-semibold text-white">{item.title}</span> · {index + 1} / {items.length}
+      <p className="mt-4 text-center text-sm text-slate-600">
+        <span className="font-semibold text-ink-900">{item.title}</span> · {index + 1} / {items.length}
       </p>
-      <button type="button" onClick={onClose} aria-label="Close" className="absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-full bg-white/10 text-xl text-white hover:bg-brand-500">
+      <button type="button" onClick={onClose} aria-label="Close" className="absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-full bg-slate-100 text-xl text-ink-900 hover:bg-brand-500 hover:text-white">
         <FaTimes />
       </button>
       {items.length > 1 && (
         <>
-          <button type="button" onClick={stop(() => onStep(-1))} aria-label="Previous" className="absolute left-3 grid h-12 w-12 place-items-center rounded-full bg-white/10 text-white hover:bg-brand-500 sm:left-6">
+          <button type="button" onClick={stop(() => onStep(-1))} aria-label="Previous" className="absolute left-3 grid h-12 w-12 place-items-center rounded-full bg-slate-100 text-ink-900 hover:bg-brand-500 hover:text-white sm:left-6">
             <FaChevronLeft />
           </button>
-          <button type="button" onClick={stop(() => onStep(1))} aria-label="Next" className="absolute right-3 grid h-12 w-12 place-items-center rounded-full bg-white/10 text-white hover:bg-brand-500 sm:right-6">
+          <button type="button" onClick={stop(() => onStep(1))} aria-label="Next" className="absolute right-3 grid h-12 w-12 place-items-center rounded-full bg-slate-100 text-ink-900 hover:bg-brand-500 hover:text-white sm:right-6">
             <FaChevronRight />
           </button>
         </>
@@ -118,7 +118,7 @@ export default function GalleryGrid({ limit, filters = true }) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.4 }}
-              className={`group relative aspect-[4/3] overflow-hidden rounded-3xl bg-ink-900 text-left shadow-sm lg:aspect-auto ${
+              className={`group relative aspect-[4/3] overflow-hidden rounded-3xl bg-white text-left shadow-sm lg:aspect-auto ${
                 item.wide && showWide ? 'lg:col-span-2' : ''
               }`}
               aria-label={`Open: ${item.title}`}
@@ -129,7 +129,7 @@ export default function GalleryGrid({ limit, filters = true }) {
                 loading="lazy"
                 className={`h-full w-full object-cover transition duration-700 group-hover:scale-110 ${item.position ?? ''}`}
               />
-              <span className="absolute inset-0 flex items-end justify-between gap-3 bg-gradient-to-t from-ink-950/90 via-ink-950/20 to-transparent p-5 opacity-0 transition duration-500 group-hover:opacity-100">
+              <span className="absolute inset-0 flex items-end justify-between gap-3 bg-gradient-to-t from-slate-900/30 via-transparent p-5 opacity-0 transition duration-500 group-hover:opacity-100">
                 <span className="translate-y-3 text-base font-semibold text-white transition duration-500 group-hover:translate-y-0">{item.title}</span>
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-500 text-white">
                   <FaExpand />

@@ -35,7 +35,7 @@ export function ContactCards({ className = 'grid gap-5 sm:grid-cols-2 lg:grid-co
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: i * 0.1, duration: 0.6 }}
-          className="group relative overflow-hidden rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-100 transition duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-ink-900/10"
+          className="group relative overflow-hidden rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-100 transition duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-slate-900/5"
         >
           <span className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-brand-500/5 transition duration-500 group-hover:scale-[3] group-hover:bg-brand-500/10" />
           <span className="relative grid h-14 w-14 place-items-center rounded-2xl bg-brand-500 text-xl text-white shadow-lg shadow-brand-500/30 transition duration-500 group-hover:rotate-12">
@@ -64,7 +64,7 @@ export function MapEmbed({ className = 'h-96' }) {
     <iframe
       title={`${company.name} location`}
       src={`https://maps.google.com/maps?q=${encodeURIComponent(contact.mapQuery)}&z=14&output=embed`}
-      className={`w-full rounded-3xl border-0 shadow-xl shadow-ink-900/5 ${className}`}
+      className={`w-full rounded-3xl border-0 shadow-xl shadow-slate-900/5 ${className}`}
       loading="lazy"
       referrerPolicy="no-referrer-when-downgrade"
     />

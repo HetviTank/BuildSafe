@@ -26,7 +26,7 @@ export default function Layout() {
           exit={{ opacity: 0, y: -16 }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         >
-          <Suspense fallback={<div className="min-h-svh bg-ink-900" />}>{outlet}</Suspense>
+          <Suspense fallback={<div className="min-h-svh bg-white" />}>{outlet}</Suspense>
         </motion.main>
       </AnimatePresence>
       <Footer />

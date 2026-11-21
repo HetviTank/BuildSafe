@@ -20,22 +20,22 @@ function ServicesDropdown({ onNavigate }) {
       transition={{ duration: 0.2 }}
       className="absolute left-1/2 top-full w-[34rem] -translate-x-1/2 pt-4"
     >
-      <div className="grid grid-cols-2 gap-1 rounded-2xl border border-white/10 bg-ink-900/95 p-3 shadow-2xl backdrop-blur-xl">
+      <div className="grid grid-cols-2 gap-1 rounded-2xl border border-slate-200 bg-white p-3 shadow-xl backdrop-blur-md">
         {services.map(({ slug, title, icon: Icon, tagline }) => (
           <NavLink
             key={slug}
             to={`/services/${slug}`}
             onClick={onNavigate}
             className={({ isActive: active }) =>
-              `group flex gap-3 rounded-xl p-3 transition ${active ? 'bg-brand-500/15' : 'hover:bg-white/5'}`
+              `group flex gap-3 rounded-xl p-3 transition ${active ? 'bg-brand-500/15' : 'hover:bg-slate-50'}`
             }
           >
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-brand-500/15 text-brand-400 transition group-hover:bg-brand-500 group-hover:text-white">
               <Icon />
             </span>
             <span>
-              <span className="block text-sm font-semibold text-white">{title}</span>
-              <span className="mt-0.5 block text-xs leading-snug text-slate-400">{tagline}</span>
+              <span className="block text-sm font-semibold text-ink-900">{title}</span>
+              <span className="mt-0.5 block text-xs leading-snug text-slate-500">{tagline}</span>
             </span>
           </NavLink>
         ))}
@@ -62,14 +62,14 @@ export default function Navbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled || open ? 'bg-ink-900/85 py-3 shadow-lg shadow-black/20 backdrop-blur-xl' : 'py-5'
+        scrolled || open ? 'bg-white/90 py-3 border-b border-slate-200 shadow-sm backdrop-blur-md' : 'py-5'
       }`}
     >
       <nav className="container-x flex items-center justify-between gap-6" aria-label="Main">
         <Link to="/" className="flex items-center gap-3">
           <Logo className="h-11 w-11" />
           <span className="leading-tight">
-            <span className="block font-display text-lg font-bold text-white">
+            <span className="block font-display text-lg font-bold text-ink-900">
               Build<span className="text-brand-500">Safe</span>
             </span>
             <span className="block text-[10px] font-semibold uppercase tracking-[0.3em] text-slate-400">
@@ -78,7 +78,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <ul className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/5 p-1 backdrop-blur lg:flex">
+        <ul className="hidden items-center gap-1 rounded-full border border-slate-200 bg-white p-1 shadow-sm lg:flex">
           {navLinks.map((link) => {
             const active = isActive(pathname, link.to)
             return (
@@ -92,7 +92,7 @@ export default function Navbar() {
                   to={link.to}
                   onFocus={() => link.hasDropdown && setDropdown(true)}
                   className={`relative flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-                    active ? 'text-white' : 'text-slate-300 hover:text-white'
+                    active ? 'text-ink-900' : 'text-slate-600 hover:text-brand-600'
                   }`}
                 >
                   {active && (
@@ -121,12 +121,12 @@ export default function Navbar() {
 
         <button
           type="button"
-          className="rounded-lg p-2 text-2xl text-white lg:hidden"
+          className="rounded-lg p-2 text-2xl text-ink-900 lg:hidden"
           onClick={() => setOpen((o) => !o)}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
         >
-          {open ? <HiX /> : <HiMenuAlt3 />}
+          {open ? <HiX className="text-ink-900" /> : <HiMenuAlt3 className="text-ink-900" />}
         </button>
       </nav>
 
@@ -150,9 +150,9 @@ export default function Navbar() {
                   <div className="flex items-center">
                     <Link
                       to={link.to}
-                      className={`block flex-1 rounded-xl px-4 py-3 font-semibold ${
-                        isActive(pathname, link.to) ? 'bg-brand-500 text-white' : 'text-slate-200 hover:bg-white/5'
-                      }`}
+                    className={`block flex-1 rounded-xl px-4 py-3 font-semibold ${
+                      isActive(pathname, link.to) ? 'bg-brand-500 text-white' : 'text-ink-900 hover:bg-slate-50'
+                    }`}
                     >
                       {link.label}
                     </Link>
@@ -162,7 +162,7 @@ export default function Navbar() {
                         onClick={() => setMobileServices((s) => !s)}
                         aria-label="Toggle services list"
                         aria-expanded={mobileServices}
-                        className="ml-2 grid h-11 w-11 place-items-center rounded-xl text-slate-200 hover:bg-white/5"
+                        className="ml-2 grid h-11 w-11 place-items-center rounded-xl text-slate-600 hover:bg-slate-50"
                       >
                         <FaChevronDown className={`transition-transform ${mobileServices ? 'rotate-180' : ''}`} />
                       </button>
@@ -175,16 +175,16 @@ export default function Navbar() {
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: 'auto', opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          className="ml-4 overflow-hidden border-l border-white/10 pl-3"
+                          className="ml-4 overflow-hidden border-l border-slate-200 pl-3"
                         >
                           {services.map((s) => (
                             <li key={s.slug}>
                               <NavLink
                                 to={`/services/${s.slug}`}
                                 className={({ isActive: active }) =>
-                                  `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm ${
-                                    active ? 'text-brand-400' : 'text-slate-300 hover:text-white'
-                                  }`
+                                   `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm ${
+                                     active ? 'text-brand-400' : 'text-slate-600 hover:text-brand-600'
+                                   }`
                                 }
                               >
                                 <s.icon className="text-brand-500" /> {s.title}
@@ -203,7 +203,7 @@ export default function Navbar() {
                 </a>
               </li>
               <li className="mt-4 flex justify-center">
-                <SocialIcons size="sm" />
+                <SocialIcons size="sm" tone="light" />
               </li>
             </ul>
           </motion.div>

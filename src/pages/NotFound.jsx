@@ -5,7 +5,7 @@ import Embers from '../components/ui/Embers'
 
 export default function NotFound() {
   return (
-    <section className="relative isolate flex min-h-svh items-center justify-center overflow-hidden bg-ink-900 px-4 text-center">
+    <section className="relative isolate flex min-h-svh items-center justify-center overflow-hidden bg-white px-4 text-center">
       <Embers className="-z-10" />
       <div>
         <motion.p
@@ -16,8 +16,8 @@ export default function NotFound() {
         >
           404
         </motion.p>
-        <h1 className="mt-4 text-2xl font-bold text-white sm:text-3xl">This page could not be found</h1>
-        <p className="mt-3 text-slate-400">The page may have moved. Let&apos;s get you back to safety.</p>
+        <h1 className="mt-4 text-2xl font-bold text-ink-900 sm:text-3xl">This page could not be found</h1>
+        <p className="mt-3 text-slate-500">The page may have moved. Let&apos;s get you back to safety.</p>
         <Link to="/" className="btn-primary mt-8">
           <FaHome /> Back to Home
         </Link>

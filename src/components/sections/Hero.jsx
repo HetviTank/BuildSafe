@@ -22,18 +22,18 @@ export default function Hero() {
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
   return (
-    <section id="home" ref={ref} className="relative isolate flex min-h-svh items-center overflow-hidden bg-ink-900">
-      <div className="absolute inset-0 -z-20 bg-gradient-to-br from-ink-950 via-ink-900 to-ink-800" />
+    <section id="home" ref={ref} className="relative isolate flex min-h-svh items-center overflow-hidden bg-white">
+      <div className="absolute inset-0 -z-20 bg-gradient-to-br from-white via-slate-50 to-slate-100" />
       <motion.div style={{ y: bgY }} className="grid-bg absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
       <Embers className="-z-10" />
-      <div className="absolute -left-32 top-1/4 -z-10 h-96 w-96 rounded-full bg-brand-500/25 blur-[120px]" />
-      <div className="absolute -right-20 bottom-0 -z-10 h-80 w-80 rounded-full bg-navy-600/30 blur-[120px]" />
+      <div className="absolute -left-32 top-1/4 -z-10 h-96 w-96 rounded-full bg-brand-500/25 blur-[120px] sm:hidden" />
+      <div className="absolute -right-20 bottom-0 -z-10 h-80 w-80 rounded-full bg-brand-500/15 blur-[120px] sm:hidden" />
 
-      <motion.div style={{ opacity: fade }} className="container-x grid items-center gap-14 pb-20 pt-32 lg:grid-cols-12">
+      <motion.div style={{ opacity: fade }} className="container-x grid items-center gap-10 pb-12 pt-24 sm:pb-20 sm:pt-32 lg:grid-cols-12">
         <motion.div variants={container} initial="hidden" animate="show" className="lg:col-span-7">
           <motion.span
             variants={item}
-            className="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-300"
+            className="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-500"
           >
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75" />
@@ -42,7 +42,7 @@ export default function Hero() {
             {company.name} · Anjar, Kutch
           </motion.span>
 
-          <h1 className="mt-6 text-5xl font-extrabold leading-[1.05] text-white sm:text-6xl lg:text-7xl">
+          <h1 className="mt-5 text-4xl font-extrabold leading-[1.05] text-ink-900 sm:text-5xl lg:text-6xl">
             {headline.map((word) => (
               <motion.span key={word} variants={item} className="mr-4 inline-block">
                 {word}
@@ -54,13 +54,13 @@ export default function Hero() {
             </motion.span>
           </h1>
 
-          <motion.p variants={item} className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">
-            <strong className="font-semibold text-white">{company.name}</strong> is {company.summary.charAt(0).toLowerCase() + company.summary.slice(1)}
+          <motion.p variants={item} className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
+            <strong className="font-semibold text-ink-900">{company.name}</strong> is {company.summary.charAt(0).toLowerCase() + company.summary.slice(1)}
           </motion.p>
 
           <motion.ul variants={item} className="mt-7 flex flex-wrap gap-x-6 gap-y-3">
             {points.map((p) => (
-              <li key={p} className="flex items-center gap-2 text-sm font-medium text-slate-200">
+              <li key={p} className="flex items-center gap-2 text-sm font-medium text-slate-600">
                 <FaCheckCircle className="text-brand-500" /> {p}
               </li>
             ))}
@@ -77,7 +77,7 @@ export default function Hero() {
           <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-4">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Follow us</span>
             <span className="h-px w-8 bg-slate-600" />
-            <SocialIcons size="sm" />
+            <SocialIcons size="sm" tone="light" />
           </motion.div>
         </motion.div>
 
@@ -89,7 +89,7 @@ export default function Hero() {
         >
           <div className="animate-float">
             <div className="absolute inset-0 rounded-full bg-brand-500/30 blur-3xl" />
-            <div className="relative rounded-full border border-white/10 bg-white/5 p-6 backdrop-blur-md">
+              <div className="relative rounded-full border border-slate-200 bg-slate-50 p-6 shadow-sm">
               <div className="absolute inset-0 animate-[spin_30s_linear_infinite] rounded-full border-2 border-dashed border-brand-500/40" />
               <img src={isoBadge} alt={company.certification} className="relative rounded-full bg-white shadow-2xl" />
             </div>
@@ -98,19 +98,19 @@ export default function Hero() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1.2 }}
-            className="absolute -right-6 -top-4 rounded-2xl border border-white/10 bg-ink-800/90 px-4 py-3 shadow-xl backdrop-blur"
+            className="absolute -right-6 -top-4 rounded-2xl border border-slate-200 bg-white/90 px-4 py-3 shadow-xl backdrop-blur"
           >
-            <p className="font-display text-2xl font-bold text-white">24/7</p>
-            <p className="text-xs text-slate-400">Emergency Response</p>
+            <p className="font-display text-2xl font-bold text-ink-900">24/7</p>
+            <p className="text-xs text-slate-500">Emergency Response</p>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1.4 }}
-            className="absolute -bottom-4 -left-8 rounded-2xl border border-white/10 bg-ink-800/90 px-4 py-3 shadow-xl backdrop-blur"
+            className="absolute -bottom-4 -left-8 rounded-2xl border border-slate-200 bg-white/90 px-4 py-3 shadow-xl backdrop-blur"
           >
             <p className="font-display text-2xl font-bold text-brand-400">100%</p>
-            <p className="text-xs text-slate-400">Client Satisfaction</p>
+            <p className="text-xs text-slate-500">Client Satisfaction</p>
           </motion.div>
         </motion.div>
       </motion.div>
@@ -120,7 +120,7 @@ export default function Hero() {
         aria-label="Scroll down"
         className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 sm:block"
       >
-        <span className="flex h-11 w-7 justify-center rounded-full border-2 border-white/30 pt-2">
+        <span className="flex h-11 w-7 justify-center rounded-full border-2 border-slate-200 pt-2">
           <motion.span
             animate={{ y: [0, 12, 0], opacity: [1, 0.2, 1] }}
             transition={{ duration: 1.8, repeat: Infinity }}

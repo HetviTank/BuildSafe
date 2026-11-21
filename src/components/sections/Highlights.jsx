@@ -6,7 +6,7 @@ export default function Highlights() {
   return (
     <section id="highlights" aria-label="Highlights" className="relative bg-white">
       <div className="container-x relative z-10 -mt-16 sm:-mt-20">
-        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-slate-200 shadow-2xl shadow-ink-900/10 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-slate-200 shadow-2xl shadow-slate-900/5 lg:grid-cols-4">
           {highlights.map(({ icon: Icon, value, suffix, text, label }, i) => (
             <motion.div
               key={label}

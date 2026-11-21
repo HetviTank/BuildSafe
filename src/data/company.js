@@ -26,9 +26,9 @@ export const company = {
 }
 
 export const contact = {
-  phones: ['+91 79907 04863', '+91 93161 33521'],
-  emails: ['buildsafeenterprise@gmail.com', 'admin.buildsafe@gmail.com'],
-  whatsapp: '917990704863',
+  phones: ['+91 75758 02470', '+91 93161 33521'],
+  emails: ['tankhetvi70@gmail.com', 'admin.buildsafe@gmail.com'],
+  whatsapp: '917575802470',
   address: {
     line1: 'Plot No. 81, Survey No. 476',
     line2: 'B/H Mithapashvariya Road, Bhuj – Bhachau Bypass',

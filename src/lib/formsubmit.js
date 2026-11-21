@@ -11,8 +11,12 @@ import { formatPhone } from './lead'
 
 const ENDPOINT = `https://formsubmit.co/ajax/${contact.emails[0]}`
 
-/** Emails one lead to both BuildSafe addresses. Resolves { ok, needsActivation? } — never throws. */
+/** Emails one lead to both BuildSafe addresses. Resolves { ok, needsActivation?, isLocalhost? } — never throws. */
 export async function emailLeadViaFormSubmit(lead) {
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    console.warn('[BuildSafe] FormSubmit does not work on localhost. Deploy to Vercel to receive emails.')
+    return { ok: false, isLocalhost: true }
+  }
   try {
     const res = await fetch(ENDPOINT, {
       method: 'POST',

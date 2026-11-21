@@ -35,10 +35,10 @@ export default function CtaBanner({
           <h2 className="relative mx-auto mt-4 max-w-3xl text-3xl font-bold text-white sm:text-5xl">{title}</h2>
           <p className="relative mx-auto mt-4 max-w-xl text-brand-50">{text}</p>
           <div className="relative mt-8 flex flex-wrap justify-center gap-4">
-            <a href={telHref(contact.phones[0])} className="btn bg-white text-brand-600 shadow-xl hover:-translate-y-0.5 hover:bg-ink-900 hover:text-white">
+            <a href={telHref(contact.phones[0])} className="btn bg-white text-brand-600 shadow-xl hover:-translate-y-0.5 hover:bg-brand-700 hover:text-white">
               <FaPhoneAlt /> {contact.phones[0]}
             </a>
-            <Link to="/contact" className="btn border border-white/40 text-white hover:bg-white/10">
+            <Link to="/contact" className="btn border border-slate-200 text-ink-900 hover:bg-slate-100">
               Send an Enquiry
             </Link>
           </div>

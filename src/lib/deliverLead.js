@@ -36,7 +36,8 @@ export async function deliverLead(lead, { source = 'Contact form', honeypot = ''
   // Email from the browser unless the server already emailed it. (No `channels` + ok = request was
   // silently dropped as spam; 429 = rate-limited — neither should be emailed.)
   const needsEmail = server.channels ? server.channels.email !== 'sent' : !server.ok && server.status !== 429
-  const emailed = needsEmail ? (await emailLeadViaFormSubmit({ ...lead, source })).ok : false
+  const emailResult = needsEmail ? (await emailLeadViaFormSubmit({ ...lead, source })) : { ok: false }
+  const emailed = emailResult.ok
 
-  return { ok: server.ok || emailed }
+  return { ok: server.ok || emailed, isLocalhost: emailResult.isLocalhost ?? false }
 }
