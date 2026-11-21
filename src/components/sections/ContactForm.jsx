@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { FaCheckCircle, FaWhatsapp } from 'react-icons/fa'
+import { FaPaperPlane, FaCheckCircle } from 'react-icons/fa'
 import { company, contact } from '../../data/company'
 import { services } from '../../data/services'
 import { PHONE_PREFIX, fieldError, normalizePhone, validateLead } from '../../lib/lead'
@@ -122,16 +122,7 @@ export default function ContactForm({ defaultService = '' }) {
             <p className="mt-2 max-w-sm text-slate-600">
               We have received your enquiry. The {company.shortName} team will contact you shortly.
             </p>
-            <a
-              href={waUrl(lastForm)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary mt-6 flex items-center justify-center gap-2 w-full bg-[#25D366]! hover:bg-[#1ebe5d]!"
-            >
-              <FaWhatsapp className="text-lg" />
-              Also send via WhatsApp
-            </a>
-            <button type="button" onClick={() => setSent(false)} className="btn-outline mt-4">
+            <button type="button" onClick={() => setSent(false)} className="btn-outline mt-6">
               Send another enquiry
             </button>
           </motion.div>
@@ -198,8 +189,8 @@ export default function ContactForm({ defaultService = '' }) {
             </div>
 
             <button type="submit" className="btn-primary mt-6 w-full">
-              <FaWhatsapp className="text-lg" />
-              Send Enquiry via WhatsApp
+              <FaPaperPlane />
+              Submit
             </button>
           </motion.form>
         )}
