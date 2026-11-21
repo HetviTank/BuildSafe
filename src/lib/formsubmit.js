@@ -8,7 +8,7 @@
 
 import { formatPhone } from './lead'
 
-const ENDPOINT = `https://formsubmit.co/ajax/tankhetvi70@gmail.com`
+const ENDPOINT = `https://formsubmit.co/ajax/buildsafeenterprise@gmail.com`
 
 /** Emails one lead to both BuildSafe addresses. Resolves { ok, needsActivation?, isLocalhost? } — never throws. */
 export async function emailLeadViaFormSubmit(lead) {
@@ -30,6 +30,7 @@ export async function emailLeadViaFormSubmit(lead) {
         Source: lead.source || 'Website',
         Page: window.location.pathname + window.location.search,
         _subject: `New enquiry: ${lead.name}${lead.service ? ` — ${lead.service}` : ''}`,
+        _cc: 'admin.buildsafe@gmail.com',
         _captcha: 'false',
       }),
       signal: AbortSignal.timeout(15000),
